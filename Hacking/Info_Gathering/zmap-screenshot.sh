@@ -1,9 +1,46 @@
 #!/bin/bash
-
-# zmap-screenshot - A script that takes screenshots
 #
-# Author:   Riccardo Mollo
-# ------------------------------------------------------------------------------
+# Author:       Riccardo Mollo (info@riccardomollo.com)
+#
+# Name:	        zmap-screenshot.sh
+#
+# Description:  A script that takes screenshots of all the websites belonging to
+#               a whole subnet.
+#
+# Usage:        ./zmap-screenshot.sh
+#
+#
+# --TODO--
+# - ???
+#
+#
+################################################################################
+
+
+# FUNCTIONS --------------------------------------------------------------------
+
+command_exists () {
+    command -v "$1" >/dev/null 2>&1 || { echo "Command not found: $1" >&2 ; exit 1 ; }
+}
+
+
+# CHECKS -----------------------------------------------------------------------
+
+declare -a CMDS=(
+"amap"
+"cutycapt"
+"host"
+"ipcalc"
+"whois"
+"zmap"
+);
+
+for CMD in ${CMDS[@]} ; do
+    command_exists $CMD
+done
+
+
+# MAIN -------------------------------------------------------------------------
 
 TARGET=$1
 PORT=$2
@@ -80,4 +117,3 @@ for IP in $(cat $FILENAME) ; do
 
     cutycapt --insecure --out=$OUT_DIR/$IP.jpg --smooth --private-browsing=on --max-wait=5000 --url="$PROTOCOL://$IP:$PORT" 2> /dev/null
 done
-
