@@ -2,12 +2,12 @@
 #
 # Author:       Riccardo Mollo (info@riccardomollo.com)
 #
-# Name:	        zmap-screenshot.sh
+# Name:	        zmap_screenshot.sh
 #
 # Description:  A script that takes screenshots of all the websites belonging to
 #               a whole subnet.
 #
-# Usage:        ./zmap-screenshot.sh
+# Usage:        ./zmap_screenshot.sh <target> [<port>]
 #
 #
 # --TODO--
@@ -50,9 +50,9 @@ if [[ -z "$TARGET" ]] ; then
 #    echo "Usage:    $THIS <target> [<port>] [<out_dir>]"
     echo "Usage:    $THIS <target> [<port>]"
     echo
-    echo "          <target>     -   Initial host (eg: scanme.nmap.org)"
-    echo "          <port>       -   Port to check (default: 80)"
-#    echo "          <out_dir>    -   Directory where screnshot are saved (default: /tmp/shots)"
+    echo "          <target>     -    Initial host (eg: scanme.nmap.org)"
+    echo "          <port>       -    Port to check (default: 80)"
+#    echo "          <out_dir>    -    Directory where screnshot are saved (default: /tmp/shots)"
 
     exit 1
 fi
