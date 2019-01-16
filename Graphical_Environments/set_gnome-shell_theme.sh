@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Author:       Riccardo Mollo (info@riccardomollo.com)
+# Author:       Riccardo Mollo (riccardomollo84@gmail.com)
 #
 # Name:	        set_gnome-shell_theme.sh
 #

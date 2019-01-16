@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Author:       Riccardo Mollo (info@riccardomollo.com)
+# Author:       Riccardo Mollo (riccardomollo84@gmail.com)
 #
 # Name:	        tor_check.sh
 #
