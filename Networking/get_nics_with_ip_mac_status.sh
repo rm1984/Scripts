@@ -32,16 +32,19 @@ else
     #for NIC in $(ifconfig -a | sed 's/[ \t].*//;/^\(lo\|\)$/d;/:/d') ; do
     for NIC in $(ifconfig -s | grep -v Iface | awk '{print $1}' | grep -v lo) ; do
         MAC=$(ip addr show $NIC | grep 'link/ether' | awk '{print $2}')
-        STATE=$(ip addr show $NIC | grep -o 'state [^ ,]\+' | sed 's/state\ //g')
+        STATUS=$(ip addr show $NIC | grep -o 'state [^ ,]\+' | sed 's/state\ //g')
 
-        if [[ "$STATE" != "UP" ]] ; then
-            printf "%-20s %-18s %-10s %-8s\n" $MAC " " $NIC $STATE
+        if [[ "$STATUS" != "UP" ]] ; then
+            printf "%-20s %-18s %-10s %-8s\n" $MAC " " $NIC $STATUS
         else
+            printf "%-20s %-18s %-10s %-8s\n" MAC IP NIC STATUS
+            echo "------------------------------------------------------------"
+
             while read -r ROW ; do
                 IP=$(echo $ROW | awk '{print $2}' | sed 's/\/.*//')
                 IFACE=$(echo $ROW | awk 'NF>1{print $NF}')
 
-                printf "%-20s %-18s %-10s %-8s\n" $MAC $IP $IFACE $STATE
+                printf "%-20s %-18s %-10s %-8s\n" $MAC $IP $IFACE $STATUS
             done < <(ip addr show $NIC | grep inet)
         fi
     done
