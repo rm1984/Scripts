@@ -4,7 +4,8 @@
 #
 # Name:	        cluster_rrp_tcpdump.sh
 #
-# Description:  A script that uses tcpdump to show the packets used by Corosync for RRP (with some fancy colors).
+# Description:  A script that uses tcpdump to show the packets used by Corosync
+#               for RRP (with some fancy colors).
 #
 # Usage:        ./cluster_rrp_tcpdump.sh
 #

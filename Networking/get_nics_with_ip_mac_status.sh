@@ -4,7 +4,8 @@
 #
 # Name:	        get_nics_with_ip_mac_status.sh
 #
-# Description:  A script that returns a list of all the NICs with their IP and MAC addresses plus their status.
+# Description:  A script that returns a list of all the NICs with their IP and
+#               MAC addresses plus their status.
 #
 # Usage:        ./get_nics_with_ip_mac_status.sh
 #

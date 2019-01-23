@@ -58,3 +58,4 @@ else
     gsettings set org.gnome.desktop.wm.preferences theme \""$OPTION"\"
     gsettings set org.gnome.shell.extensions.user-theme name \""$OPTION"\"
 fi
+

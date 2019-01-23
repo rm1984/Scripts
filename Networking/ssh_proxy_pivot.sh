@@ -4,7 +4,8 @@
 #
 # Name:	        ssh_proxy_pivot.sh
 #
-# Description:  A script that estabilishes a connection to a remote host and uses it for SSH tunneling/pivoting via proxychains.
+# Description:  A script that estabilishes a connection to a remote host and
+#               uses it for SSH tunneling/pivoting via proxychains.
 #               ProxyChains needs to be installed and configured.
 #
 #               Here is a snippet from "/etc/proxychains.conf":

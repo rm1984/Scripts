@@ -4,10 +4,10 @@
 #
 # Name:	        share_dir_via_rdp.sh
 #
-# Description:  A script that maps and shares a local directory to a remote Windows
-#               machine via RDP.
+# Description:  A script that maps and shares a local directory to a remote
+#               Windows machine via RDP.
 #
-# Usage:        /share_dir_via_rdp.sh <local_dir> <rdp_server> [<screen_resolution>]
+# Usage:        ./share_dir_via_rdp.sh <local_dir> <rdp_server> [<screen_resolution>]
 #
 #
 # --TODO--
@@ -56,3 +56,4 @@ if (( $# < 2 )) ; then
 fi
 
 rdesktop -r disk:share="${LOCAL_DIR}" -g "${SCRN_RES}" "${RDP_SERVER}"
+

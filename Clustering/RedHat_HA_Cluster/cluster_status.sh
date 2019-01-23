@@ -4,7 +4,8 @@
 #
 # Name:	        cluster_running_resource_groups.sh
 #
-# Description:  A script that shows the status of the whole running cluster (with some fancy colors).
+# Description:  A script that shows the status of the whole running cluster
+#               (with some fancy colors).
 #
 # Usage:        ./cluster_status.sh [<RESOURCE_GROUP>]
 #

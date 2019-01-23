@@ -2,11 +2,13 @@
 #
 # Author:       Riccardo Mollo (riccardomollo84@gmail.com)
 #
-# Name:	        nmap_deep.sh
+# Name:	        git_list_repos.sh
 #
-# Description:  A script that performs a deep, complete and aggressive NMAP scan.
+# Description:  Given a directory that contains a lot nested directories with
+#               many GIT projects, this script lists all the projects'
+#               directories with their relative GIT project's remote URL.
 #
-# Usage:        ./nmap_deep.sh <target>
+# Usage:        ./git_list_repos.sh
 #
 #
 # --TODO--
@@ -18,7 +20,7 @@
 
 # VARIABLES --------------------------------------------------------------------
 
-TARGET=$1
+GIT_BASE_DIR=/usr/local/src/git
 
 
 # FUNCTIONS --------------------------------------------------------------------
@@ -30,13 +32,8 @@ check_cmd () {
 
 # CHECKS -----------------------------------------------------------------------
 
-if [[ $EUID -ne 0 ]] ; then
-    echo "This script must be run as root!" 1>&2
-    exit 1
-fi
-
 declare -a CMDS=(
-"nmap"
+"rdesktop"
 );
 
 for CMD in ${CMDS[@]} ; do
@@ -46,9 +43,18 @@ done
 
 # MAIN -------------------------------------------------------------------------
 
-if  [[ ! -z $TARGET ]] ; then
-    nmap -vv -Pn -sS -A -sC -p- -T 3 -script-args=unsafe=1 -n ${TARGET}
-else
-    >&2 echo "Error! <target> not specified."
-        echo "Usage: ./$(basename $BASH_SOURCE) <target>"
-fi
+CUR_DIR=$(pwd)
+
+for DIR in $(find $GIT_BASE_DIR -name ".git" | sed -e 's/\/.git//g') ; do
+    cd $DIR
+
+    URL=$(git remote -v | grep fetch | awk '{print $2}')
+
+    echo "DIR:    ${DIR}"
+    echo "URL:    ${URL}"
+
+    echo
+done
+
+cd $CUR_DIR
+

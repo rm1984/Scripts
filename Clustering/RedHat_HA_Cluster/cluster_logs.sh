@@ -4,7 +4,8 @@
 #
 # Name:	        cluster_logs.sh
 #
-# Description:  A script that shows all the logs of a RHEL 7 cluster (corosync, pacemaker and pcsd).
+# Description:  A script that shows all the logs of a RHEL 7 cluster (corosync,
+#               pacemaker and pcsd).
 #
 # Usage:        ./cluster_logs.sh
 #

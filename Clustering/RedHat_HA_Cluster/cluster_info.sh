@@ -4,7 +4,8 @@
 #
 # Name:	        cluster_info.sh
 #
-# Description:  A script that shows some information about running resources in resource groups on a RHEL 7 cluster.
+# Description:  A script that shows some information about running resources in
+#               resource groups on a RHEL 7 cluster.
 #
 # Usage:        ./cluster_info.sh
 #

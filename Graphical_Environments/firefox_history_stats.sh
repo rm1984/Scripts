@@ -5,7 +5,9 @@
 # Name:	        firefox_history_stats.sh
 #
 # Description:  A script that gathers some statistics from your Firefox history.
-#               It uses sqlite3 to parse user's Firefox history database and get the last three months, then it removes all the IP addresses and port numbers and finally sorts and counts them.
+#               It uses sqlite3 to parse user's Firefox history database and get
+#               the last three months, then it removes all the IP addresses and
+#               port numbers and finally sorts and counts them.
 #
 # Usage:        ./firefox_history_stats.sh
 #

@@ -4,7 +4,8 @@
 #
 # Name:	        cluster_running_resource_groups.sh
 #
-# Description:  A script that shows on which nodes all the resource groups are running.
+# Description:  A script that shows on which nodes all the resource groups are
+#               running.
 #
 # Usage:        ./cluster_running_resource_groups.sh
 #

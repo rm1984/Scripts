@@ -7,7 +7,7 @@
 # Description:  A script that records a screencast and saves it to a file.
 #               Press CTRL+C to stop recording.
 #
-# Usage:        record_screen.sh [-o OUTPUT_FILE] [-r FRAMES_PER_SECOND]
+# Usage:        ./record_screen.sh [-o OUTPUT_FILE] [-r FRAMES_PER_SECOND]
 #
 #
 # --TODO--
@@ -46,3 +46,4 @@ done
 # MAIN -------------------------------------------------------------------------
 
 ffmpeg -f x11grab -s wxga -r ${FRAMES_PER_SECOND} -i ${DISPLAY} -qscale 0 ${OUTPUT_FILE}
+

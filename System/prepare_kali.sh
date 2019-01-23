@@ -4,7 +4,8 @@
 #
 # Name:	        prepare_kali.sh
 #
-# Description:  A script that installs and configures useful packages on a minimal Kali Linux installation.
+# Description:  A script that installs and configures useful packages on a
+#               minimal Kali Linux installation.
 #
 # Usage:        ./prepare_kali.sh
 #
