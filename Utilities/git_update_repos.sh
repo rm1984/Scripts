@@ -2,13 +2,13 @@
 #
 # Author:       Riccardo Mollo (riccardomollo84@gmail.com)
 #
-# Name:	        git_list_repos.sh
+# Name:	        git_update_repos.sh
 #
-# Description:  Given a directory that contains a lot of nested directories with
-#               many GIT projects, this script lists all the projects'
-#               directories with their relative GIT project's remote URL.
+# Description:  Given a directory that contains a lot nested directories with
+#               many GIT projects, this script updates all the GIT projects code
+#               to the latest version.
 #
-# Usage:        ./git_list_repos.sh
+# Usage:        ./git_update_repos.sh
 #
 #
 # --TODO--
@@ -48,10 +48,11 @@ CUR_DIR=$(pwd)
 for DIR in $(find $GIT_BASE_DIR -name ".git" | sed -e 's/\/.git//g') ; do
     cd $DIR
 
-    URL=$(git remote -v | grep fetch | awk '{print $2}')
+    PROJ=$(git remote -v | head -n1 | awk '{print $2}' | sed -e 's,.*:\(.*/\)\?,,' -e 's/\.git$//')
 
-    echo "DIR:    ${DIR}"
-    echo "URL:    ${URL}"
+    echo "---- $PROJ"
+
+    git pull
 
     echo
 done
