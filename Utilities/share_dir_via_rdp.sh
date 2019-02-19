@@ -28,8 +28,8 @@ THIS=$(basename "$0")
 
 # FUNCTIONS --------------------------------------------------------------------
 
-check_cmd () {
-    command -v "$1" >/dev/null 2>&1 || { echo "ERROR! Command not found: $1" >&2 ; exit 1 ; }
+ommand_exists() {
+    command -v "$1" >/dev/null 2>&1 || { echo "ERROR! Command not found: $1" 1>&2 ; exit 1 ; }
 }
 
 
@@ -40,17 +40,17 @@ declare -a CMDS=(
 );
 
 for CMD in ${CMDS[@]} ; do
-    check_cmd $CMD
+    ommand_exists $CMD
 done
 
 
 # MAIN -------------------------------------------------------------------------
 
 if (( $# < 2 )) ; then
-    echo "Usage:    $THIS <local_dir> <rdp_server> [<screen_resolution>]"
+    echo "Usage:    $THIS <LOCAL_DIR> <RDP_SERVER> [<screen_resolution>]"
     echo
-    echo "          <local_dir>     -    Local directory to share on remote machine"
-    echo "          <rdp_server>    -    Remote RDP target machine"
+    echo "          <LOCAL_DIR>     -    Local directory to share on remote machine"
+    echo "          <RDP_SERVER>    -    Remote RDP target machine"
 
     exit 1
 fi

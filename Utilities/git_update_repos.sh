@@ -25,8 +25,8 @@ GIT_BASE_DIR=/usr/local/src/GIT
 
 # FUNCTIONS --------------------------------------------------------------------
 
-check_cmd () {
-    command -v "$1" >/dev/null 2>&1 || { echo "ERROR! Command not found: $1" >&2 ; exit 1 ; }
+command_exists() {
+    command -v "$1" >/dev/null 2>&1 || { echo "ERROR! Command not found: $1" 1>&2 ; exit 1 ; }
 }
 
 
@@ -37,7 +37,7 @@ declare -a CMDS=(
 );
 
 for CMD in ${CMDS[@]} ; do
-    check_cmd $CMD
+    command_exists $CMD
 done
 
 

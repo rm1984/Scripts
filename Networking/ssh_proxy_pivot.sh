@@ -34,8 +34,8 @@ USER_AND_TARGET=$1
 
 # FUNCTIONS --------------------------------------------------------------------
 
-check_cmd () {
-    command -v "$1" >/dev/null 2>&1 || { echo "ERROR! Command not found: $1" >&2 ; exit 1 ; }
+command_exists() {
+    command -v "$1" >/dev/null 2>&1 || { echo "ERROR! Command not found: $1" 1>&2 ; exit 1 ; }
 }
 
 
@@ -47,14 +47,16 @@ declare -a CMDS=(
 );
 
 for CMD in ${CMDS[@]} ; do
-    check_cmd $CMD
+    command_exists $CMD
 done
 
 
 # MAIN -------------------------------------------------------------------------
 
 ssh -4 -f -N -D $LOCAL_PORT $USER_AND_TARGET
+
 echo "Listening on port ${LOCAL_PORT} on host ${LOCAL_HOST}..."
+
 netstat -tunlp 2> /dev/null | grep -v tcp6 | grep tcp | grep --color=never ":${LOCAL_PORT} " | tail -1
 
 # now proceed with (e.g.):

@@ -13,28 +13,20 @@
 #
 #
 # --TODO--
-# - fix variables and code
 # - ???
 #
 #
 ################################################################################
 
 
-# VARIABLES --------------------------------------------------------------------
-
-###
-
-
 # MAIN -------------------------------------------------------------------------
 
-if [[ ! -d ${HOME}/.www ]]; then
-    mkdir ${HOME}/.www
-fi
+OUT=$(mktemp -d -q -p ~)
 
-cp "$(find "${HOME}/.mozilla/firefox/" -name "places.sqlite" | head -n 1)" "${HOME}/.www/places.sqlite"
-sqlite3 "${HOME}/.www/places.sqlite" "SELECT url FROM moz_places, moz_historyvisits WHERE moz_places.id = moz_historyvisits.place_id and visit_date > strftime('%s','now','-3 month')*1000000 ORDER by visit_date;"  > "${HOME}/.www/urls-unsorted"
-sort -u "${HOME}/.www/urls-unsorted" > "${HOME}/.www/urls"
-awk -F/ '{print $3}' "${HOME}/.www/urls" | grep -v -E -e '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' -e ':.*' -e '^$' | sed -e 's/www\.//g' |sort | uniq -c | sort -n
+cp $(find "${HOME}/.mozilla/firefox/" -name "places.sqlite" | head -n 1) "${OUT}/places.sqlite"
+sqlite3 "${OUT}/places.sqlite" "SELECT url FROM moz_places, moz_historyvisits WHERE moz_places.id = moz_historyvisits.place_id and visit_date > strftime('%s','now','-3 month')*1000000 ORDER by visit_date;"  > "${OUT}/urls-unsorted"
+sort -u "${OUT}/urls-unsorted" > "${OUT}/urls"
+awk -F'/' '{print $3}' "${OUT}/urls" | grep -v -E -e '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' -e ':.*' -e '^$' | sed -e 's/www\.//g' | sort | uniq -c | sort -n
 
-rm -rf ${HOME}/.www
+rm -rf ${OUT}
 

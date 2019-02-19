@@ -27,8 +27,8 @@ EXIT_NODE="http://checkip.amazonaws.com/"
 
 # FUNCTIONS --------------------------------------------------------------------
 
-check_cmd () {
-    command -v "$1" >/dev/null 2>&1 || { echo "ERROR! Command not found: $1" >&2 ; exit 1 ; }
+command_exists() {
+    command -v "$1" >/dev/null 2>&1 || { echo "ERROR! Command not found: $1" 1>&2 ; exit 1 ; }
 }
 
 
@@ -40,7 +40,7 @@ declare -a CMDS=(
 );
 
 for CMD in ${CMDS[@]} ; do
-    check_cmd $CMD
+    command_exists$CMD
 done
 
 
@@ -48,7 +48,7 @@ done
 
 TOR_STRING=$(netstat -plantue | grep LISTEN | grep ${PORT})
 
-if [ -z "${TOR_STRING}" ]; then
+if [[ -z "${TOR_STRING}" ]] ; then
     echo "Tor service doesn't seem to be running (since nothing is listening on port ${PORT})..."
 else
     curl --socks5 ${HOST}:${PORT} --socks5-hostname ${HOST}:${PORT} -s ${CHECK_SITE} | cat | grep -m 1 Congratulations | xargs

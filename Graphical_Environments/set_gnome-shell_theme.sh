@@ -20,8 +20,8 @@
 
 # FUNCTIONS --------------------------------------------------------------------
 
-command_exists () {
-    command -v "$1" >/dev/null 2>&1 || { echo "Command not found: $1" >&2 ; exit 1 ; }
+command_exists() {
+    command -v "$1" >/dev/null 2>&1 || { echo "Command not found: $1" 1>&2 ; exit 1 ; }
 }
 
 
@@ -54,6 +54,7 @@ if [[ "$OPTION" == "-l" || "$OPTION" == "--list" ]] ; then
     ls -A1 /usr/share/themes/
 else
     echo "Setting Gnome-Shell theme \""$OPTION"\"..."
+
     gsettings set org.gnome.desktop.interface gtk-theme \""$OPTION"\"
     gsettings set org.gnome.desktop.wm.preferences theme \""$OPTION"\"
     gsettings set org.gnome.shell.extensions.user-theme name \""$OPTION"\"

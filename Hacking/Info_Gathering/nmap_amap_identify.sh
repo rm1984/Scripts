@@ -2,11 +2,12 @@
 #
 # Author:       Riccardo Mollo (riccardomollo84@gmail.com)
 #
-# Name:	        nmap_deep.sh
+# Name:	        nmap_amap_identify.sh <TARGET>
 #
-# Description:  A script that performs a deep, complete and aggressive NMAP scan.
+# Description:  A script that tries to discover the real services running behind
+#               the open ports on a target host.
 #
-# Usage:        ./nmap_deep.sh <TARGET>
+# Usage:        ./nmap_amap_identify.sh <TARGET>
 #
 #
 # --TODO--
@@ -14,11 +15,6 @@
 #
 #
 ################################################################################
-
-
-# VARIABLES --------------------------------------------------------------------
-
-TARGET=$1
 
 
 # FUNCTIONS --------------------------------------------------------------------
@@ -37,6 +33,7 @@ if [[ $EUID -ne 0 ]] ; then
 fi
 
 declare -a CMDS=(
+"amap"
 "nmap"
 );
 
@@ -47,9 +44,16 @@ done
 
 # MAIN -------------------------------------------------------------------------
 
-if  [[ ! -z $TARGET ]] ; then
-    nmap -vv -Pn -sS -A -sC -p- -T 3 -script-args=unsafe=1 -n ${TARGET}
-else
-    >&2 echo "Error! <target> not specified."
-        echo "Usage: ./$(basename $BASH_SOURCE) <TARGET>"
-fi
+IP=$1
+TMPFILE=$(mktemp -q)
+
+nmap -sS -v -O --open ${IP} -oG ${TMPFILE} &>/dev/null
+
+cat ${TMPFILE} | grep 'Ports:' | cut -d':' -f3 | sed -e 's/, /\n/g' | grep open | cut -d'/' -f1
+
+for PORT in $(cat ${TMPFILE} | grep 'Ports:' | cut -d':' -f3 | sed -e 's/, /\n/g' | grep open | cut -d'/' -f1) ; do
+    amap -q -U ${IP} $PORT | grep matches
+done
+
+rm -f ${TMPFILE}
+

@@ -7,7 +7,7 @@
 # Description:  A script that takes screenshots of all the websites belonging to
 #               a whole subnet.
 #
-# Usage:        ./zmap_screenshot.sh <target> [<port>]
+# Usage:        ./zmap_screenshot.sh <TARGET> [<PORT>]
 #
 #
 # --TODO--
@@ -19,8 +19,8 @@
 
 # FUNCTIONS --------------------------------------------------------------------
 
-command_exists () {
-    command -v "$1" >/dev/null 2>&1 || { echo "Command not found: $1" >&2 ; exit 1 ; }
+command_exists() {
+    command -v "$1" >/dev/null 2>&1 || { echo "Command not found: $1" 1>&2 ; exit 1 ; }
 }
 
 
@@ -47,11 +47,11 @@ PORT=$2
 THIS=$(basename "$0")
 
 if [[ -z "$TARGET" ]] ; then
-#    echo "Usage:    $THIS <target> [<port>] [<out_dir>]"
-    echo "Usage:    $THIS <target> [<port>]"
+#    echo "Usage:    $THIS <TARGET> [<PORT>] [<out_dir>]"
+    echo "Usage:    $THIS <TARGET> [<PORT>]"
     echo
-    echo "          <target>     -    Initial host (eg: scanme.nmap.org)"
-    echo "          <port>       -    Port to check (default: 80)"
+    echo "          <TARGET>     -    Initial host (eg: scanme.nmap.org)"
+    echo "          <PORT>       -    Port to check (default: 80)"
 #    echo "          <out_dir>    -    Directory where screnshot are saved (default: /tmp/shots)"
 
     exit 1
