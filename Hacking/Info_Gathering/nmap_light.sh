@@ -2,11 +2,12 @@
 #
 # Author:       Riccardo Mollo (riccardomollo84@gmail.com)
 #
-# Name:	        nmap_deep.sh
+# Name:	        nmap_light.sh
 #
-# Description:  A script that performs a deep, complete and aggressive NMAP scan.
+# Description:  A script that performs a light scan againt a subnet, and saves
+#               the output in a greppable text file.
 #
-# Usage:        ./nmap_deep.sh <TARGET>
+# Usage:        ./nmap_light.sh <SUBNET>
 #
 #
 # --TODO--
@@ -18,7 +19,7 @@
 
 # VARIABLES --------------------------------------------------------------------
 
-TARGET=$1
+SUBNET=$1
 
 
 # FUNCTIONS --------------------------------------------------------------------
@@ -47,9 +48,11 @@ done
 
 # MAIN -------------------------------------------------------------------------
 
-if  [[ ! -z $TARGET ]] ; then
-    nmap -vv -Pn -sS -A -sC -p- -T 3 -script-args=unsafe=1 -n ${TARGET}
+if  [[ ! -z $SUBNET ]] ; then
+    OUTFILE=$(echo "nmap_$SUBNET.txt" | tr '/' '_')
+
+    nmap -sS -v -O --open -oG ${OUTFILE} ${SUBNET}
 else
-    >&2 echo "Error! <TARGET> not specified."
-        echo "Usage: ./$(basename $BASH_SOURCE) <TARGET>"
+    >&2 echo "Error! <SUBNET> not specified."
+        echo "Usage: ./$(basename $BASH_SOURCE) <SUBNET>"
 fi
