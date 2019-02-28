@@ -4,8 +4,9 @@
 #
 # Name:	        nmap_light.sh
 #
-# Description:  A script that performs a light scan againt a subnet, and saves
-#               the output in a greppable text file.
+# Description:  A script that performs a light scan againt a subnet considering
+#               the open ports only, then saves the output in a greppable text
+#               file.
 #
 # Usage:        ./nmap_light.sh <SUBNET>
 #
