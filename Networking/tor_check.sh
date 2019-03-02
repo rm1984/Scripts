@@ -40,7 +40,7 @@ declare -a CMDS=(
 );
 
 for CMD in ${CMDS[@]} ; do
-    command_exists$CMD
+    command_exists $CMD
 done
 
 
