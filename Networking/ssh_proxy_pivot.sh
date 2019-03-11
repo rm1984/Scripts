@@ -9,6 +9,7 @@
 #               ProxyChains needs to be installed and configured.
 #
 #               Here is a snippet from "/etc/proxychains.conf":
+#
 #               ...
 #               [ProxyList]
 #               #socks4     127.0.0.1   9050
@@ -53,7 +54,7 @@ done
 
 # MAIN -------------------------------------------------------------------------
 
-ssh -4 -f -N -D $LOCAL_PORT $USER_AND_TARGET
+ssh -4 -f -N -D ${LOCAL_PORT} ${USER_AND_TARGET}
 
 echo "Listening on port ${LOCAL_PORT} on host ${LOCAL_HOST}..."
 
