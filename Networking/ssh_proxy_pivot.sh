@@ -51,6 +51,12 @@ for CMD in ${CMDS[@]} ; do
     command_exists $CMD
 done
 
+if [[ "$#" -ne 1 ]] ; then
+    echo "Usage: ./ssh_proxy_pivot.sh <[user@]target>"
+
+    exit 1
+fi
+
 
 # MAIN -------------------------------------------------------------------------
 

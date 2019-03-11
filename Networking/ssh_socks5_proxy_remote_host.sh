@@ -54,11 +54,17 @@ for CMD in ${CMDS[@]} ; do
     command_exists $CMD
 done
 
+if [[ "$#" -ne 1 ]] ; then
+    echo "Usage: ./ssh_socks5_proxy_remote_host.sh <[user@]target>"
+
+    exit 1
+fi
+
 
 # MAIN -------------------------------------------------------------------------
 
-ssh -D ${LOCAL_HOST} localhost
-ssh -R ${LOCAL_HOST}:localhost:${LOCAL_HOST} ${USER_AND_TARGET}
+ssh -D ${LOCAL_PORT} localhost
+ssh -R ${LOCAL_PORT}:localhost:${LOCAL_PORT} ${USER_AND_TARGET}
 
 # now, on the remote host, proceed with (e.g.):
 #
