@@ -22,20 +22,25 @@ alias la='ls -A'
 alias l='ls -CF'
 alias lsd="ls -ad */"
 
-#### custom settings
+#### Custom settings
 export HISTTIMEFORMAT='%F %T '
 export PAGER=less
 
-#### custom aliases
+#### Custom aliases
 alias dmesg="dmesg --color"
 alias bd=". bd -si"
 alias vi="nvim"
 alias vim="nvim"
 alias lx="exa -bghHaliS"
+alias date="date +'%a %d %h %Y %T'"
 
-# Only load liquidprompt in interactive shells, not from a script or from scp
-echo $- | grep -q i 2>/dev/null && . /usr/share/liquidprompt/liquidprompt
-
-# Custom FireFox profiles
+### Custom FireFox profiles
 alias firefox_burpsuite="firefox -P 'BurpSuite'"
 alias firefox_tor="firefox -P 'Tor'"
+
+### Custom binary paths
+export PATH=$PATH:/opt/oracle/instantclient_18_3:/opt/mssql-tools/bin
+
+### Only load LiquidPrompt in interactive shells, not from a script or from scp
+echo $- | grep -q i 2>/dev/null && . /usr/share/liquidprompt/liquidprompt
+
