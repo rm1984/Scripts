@@ -38,8 +38,11 @@ alias date="date +'%a %d %h %Y %T'"
 alias firefox_burpsuite="firefox -P 'BurpSuite'"
 alias firefox_tor="firefox -P 'Tor'"
 
-### Custom binary paths
-export PATH=$PATH:/opt/oracle/instantclient_18_3:/opt/mssql-tools/bin
+# Custom library paths
+export LD_LIBRARY_PATH="/opt/oracle/instantclient"
+
+# Custom binary paths
+export PATH=$PATH:/opt/oracle/instantclient:/opt/mssql-tools/bin
 
 ### Only load LiquidPrompt in interactive shells, not from a script or from scp
 echo $- | grep -q i 2>/dev/null && . /usr/share/liquidprompt/liquidprompt
