@@ -63,7 +63,7 @@ fi
 
 # MAIN -------------------------------------------------------------------------
 
-ssh -D ${LOCAL_PORT} localhost
+ssh -f -N -D ${LOCAL_PORT} localhost
 ssh -R ${LOCAL_PORT}:localhost:${LOCAL_PORT} ${USER_AND_TARGET}
 
 # now, on the remote host, proceed with (e.g.):
