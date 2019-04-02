@@ -33,6 +33,7 @@
 
 LOCAL_HOST="127.0.0.1"
 LOCAL_PORT=3128
+REMOTE_PORT=$LOCAL_PORT
 USER_AND_TARGET=$1
 
 
@@ -64,9 +65,18 @@ fi
 # MAIN -------------------------------------------------------------------------
 
 ssh -f -N -D ${LOCAL_PORT} localhost
-ssh -R ${LOCAL_PORT}:localhost:${LOCAL_PORT} ${USER_AND_TARGET}
+ssh -R ${REMOTE_PORT}:localhost:${LOCAL_PORT} ${USER_AND_TARGET}
 
 # now, on the remote host, proceed with (e.g.):
 #
 # proxychains curl icanhazip.com
 # ...
+#
+#
+#
+# to use APT via "local" SOCKS5 proxy, create file "/etc/apt/apt.conf.d/12proxy"
+# with fhe following contents (e.g.: with REMOTE_PORT = 3128):
+#
+# Acquire::http::proxy "socks5h://127.0.0.1:3128";
+# Acquire::https::proxy "socks5h://127.0.0.1:3128";
+
