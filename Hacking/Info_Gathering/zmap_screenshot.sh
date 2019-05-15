@@ -7,7 +7,7 @@
 # Description:  A script that takes screenshots of all the websites belonging to
 #               a whole subnet.
 #
-# Usage:        ./zmap_screenshot.sh <TARGET> [<PORT>]
+# Usage:        ./zmap_screenshot.sh <target> [<port>]
 #
 #
 # --TODO--
@@ -47,11 +47,11 @@ PORT=$2
 THIS=$(basename "$0")
 
 if [[ -z "$TARGET" ]] ; then
-#    echo "Usage:    $THIS <TARGET> [<PORT>] [<out_dir>]"
-    echo "Usage:    $THIS <TARGET> [<PORT>]"
+#    echo "Usage:    $THIS <target> [<port>] [<out_dir>]"
+    echo "Usage:    $THIS <target> [<port>]"
     echo
-    echo "          <TARGET>     -    Initial host (eg: scanme.nmap.org)"
-    echo "          <PORT>       -    Port to check (default: 80)"
+    echo "          <target>     -    Initial host (eg: scanme.nmap.org)"
+    echo "          <port>       -    Port to check (default: 80)"
 #    echo "          <out_dir>    -    Directory where screnshot are saved (default: /tmp/shots)"
 
     exit 1
@@ -84,7 +84,8 @@ RANGE=$(whois $IP | egrep 'inetnum:|NetRange:' | head -1 | cut -d':' -f2 | xargs
 
 echo "IP addresses range:     $RANGE"
 
-NETWORK=$(ipcalc "$RANGE" | tail -1)
+#NETWORK=$(ipcalc "$RANGE" | tail -1)
+NETWORK=$(ipcalc "$RANGE" | grep -v deaggregate | head -1)
 
 echo "Range network:          $NETWORK"
 
