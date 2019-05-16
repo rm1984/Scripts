@@ -52,7 +52,7 @@ nmap -sS -v -O --open ${IP} -oG ${TMPFILE} &>/dev/null
 cat ${TMPFILE} | grep 'Ports:' | cut -d':' -f3 | sed -e 's/, /\n/g' | grep open | cut -d'/' -f1
 
 for PORT in $(cat ${TMPFILE} | grep 'Ports:' | cut -d':' -f3 | sed -e 's/, /\n/g' | grep open | cut -d'/' -f1) ; do
-    amap -q -U ${IP} $PORT | grep matches
+    amap -q -U ${IP} ${PORT} | grep matches
 done
 
 rm -f ${TMPFILE}

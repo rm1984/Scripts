@@ -47,7 +47,7 @@ done
 
 # MAIN -------------------------------------------------------------------------
 
-if  [[ ! -z $TARGET ]] ; then
+if [[ ! -z $TARGET ]] ; then
     nmap -vv -Pn -sS -A -sC -p- -T 3 -script-args=unsafe=1 -n ${TARGET}
 else
     >&2 echo "Error! <TARGET> not specified."

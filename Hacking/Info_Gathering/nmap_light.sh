@@ -49,7 +49,7 @@ done
 
 # MAIN -------------------------------------------------------------------------
 
-if  [[ ! -z $SUBNET ]] ; then
+if [[ ! -z $SUBNET ]] ; then
     OUTFILE=$(echo "nmap_$SUBNET.txt" | tr '/' '_')
 
     nmap -sS -v -O --open -oG ${OUTFILE} ${SUBNET}
