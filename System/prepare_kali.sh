@@ -58,7 +58,7 @@ EOL
 apt update
 
 # various tools
-apt install -y gpm deborphan dnsutils net-tools moreutils colordiff wicd wicd-daemon wicd-curses openvpn htop strace locate rpm nsis elfutils alien vim tcpdump command-not-found mariadb-client xrdp links w3m mssql-tools ntpdate cifs-utils wmi-client keyutils winbind libnss-winbind libpam-winbind irpas wireshark-common snmp snmpcheck acpid acpi arping cifs-utils nfs-common iputils-tracepath open-iscsi ftp freetds-bin screen tmux smem python3-pip socat rsh-client rsync mcrypt libnss3-tools unar facter libpcap-dev libsqlite3-dev gcc graphviz php-cli php-sqlite3 sqlite3 libvmdk-utils libguestfs-tools curlftpfs bsdiff makefs lshw sockstat whois
+apt install -y gpm deborphan dnsutils net-tools moreutils colordiff wicd wicd-daemon wicd-curses openvpn htop strace locate rpm nsis elfutils alien vim tcpdump command-not-found mariadb-client xrdp links w3m mssql-tools ntpdate cifs-utils wmi-client keyutils winbind libnss-winbind libpam-winbind irpas wireshark-common snmp snmpcheck acpid acpi arping cifs-utils nfs-common iputils-tracepath open-iscsi ftp freetds-bin screen tmux smem python3-pip socat rsh-client rsync mcrypt libnss3-tools unar facter libpcap-dev libsqlite3-dev gcc graphviz php-cli php-sqlite3 sqlite3 libvmdk-utils libguestfs-tools curlftpfs bsdiff makefs lshw sockstat whois prips
 
 # hacking tools
 apt install -y arp-scan sslscan sslyze exploitdb dirb dirbuster netdiscover enum4linux amap smbmap whatweb wafw00f hashid findmyhash fimap theharvester sublist3r dnsenum dnsmap fierce goofile hping3 uniscan whatweb wpscan wordlists samdump2 chntpw passing-the-hash grabber ipcalc zmap metagoofil hydra dnsrecon responder proxychains dsniff creddump nbtscan seclists veil gobuster mimikatz jd-gui jad
