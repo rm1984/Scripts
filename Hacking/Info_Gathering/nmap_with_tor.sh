@@ -22,7 +22,7 @@
 #               lines:
 #
 #                   dynamic_chain
-#                   proxy_dns 
+#                   proxy_dns
 #                   tcp_read_time_out 15000
 #                   tcp_connect_time_out 8000
 #                   [ProxyList]
@@ -67,27 +67,3 @@ else
     >&2 echo "Error! <TARGET> not specified."
         echo "Usage: ./$(basename $BASH_SOURCE) <TARGET>"
 fi
-
-
-
-
-
-
-
-
-
-
-SOCKSPort              9050
-AutomapHostsOnResolve  1
-DNSPort                53530
-TransPort              9040
-
-
-
-
-dynamic_chain
-proxy_dns 
-tcp_read_time_out 15000
-tcp_connect_time_out 8000
-[ProxyList]
-socks5 127.0.0.1 9050
