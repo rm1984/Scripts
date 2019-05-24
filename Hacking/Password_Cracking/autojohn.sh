@@ -94,7 +94,7 @@ else
 
             exit 0
         elif [[ "$FILE" == "--info" ]] ; then
-            DICT_NUM=$(ls -1 $DICT_DIR/*txt | wc -l)
+            DICT_NUM=$(ls -1 $DICT_DIR/*txt | wc -l | awk '{ print $1 }')
             DICT_SIZ=$(du -ch $DICT_DIR/*txt | tail -1 | awk '{ print $1 }')
 
             echo "[+] Dictionaries directory:  $DICT_DIR"
