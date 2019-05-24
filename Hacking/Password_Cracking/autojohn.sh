@@ -25,7 +25,7 @@
 
 # VARIABLES --------------------------------------------------------------------
 
-DICT_DIR=~/dictionariescd      # each wordlist in this directory MUST be a ".txt" file
+DICT_DIR=~/dictionaries     # each wordlist in this directory MUST be a ".txt" file
 POTS_DIR=~/.john            # here you will find cracked passwords
 CORES=4                     # number of parallel processes/tasks
 
