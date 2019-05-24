@@ -17,7 +17,7 @@
 # - various checks (files, dirs, ...)
 # - detect number of cores (for Linux and FreeBSD)
 # - improve and optimize code
-# - ...
+# - ???
 #
 #
 ################################################################################
@@ -25,7 +25,7 @@
 
 # VARIABLES --------------------------------------------------------------------
 
-DICT_DIR=~/dictionaries     # each wordlist in this directory MUST be a ".txt" file
+DICT_DIR=~/dictionariescd      # each wordlist in this directory MUST be a ".txt" file
 POTS_DIR=~/.john            # here you will find cracked passwords
 CORES=4                     # number of parallel processes/tasks
 
@@ -123,6 +123,12 @@ else
         exit 0
     elif [[ "$#" -eq 3 ]] ; then
         logo
+
+        if [[ ! -f "$FILE" ]] ; then
+            echo "Error! Hashes file not found: $FILE"
+
+            exit 1
+        fi
 
         FORMAT=$2
         SESSION=$3
