@@ -62,7 +62,8 @@ TARGET=$1
 OUT="/tmp/${TARGET}.out"
 
 if [[ ! -z ${TARGET} ]] ; then
-    proxychains nmap -4 -sT -Pn -n -vv --open -oG ${OUT} ${TARGET}
+    #proxychains nmap -4 -sT -Pn -n -vv --open -oG ${OUT} ${TARGET}
+    proxychains nmap -4 -F -sT -Pn -n -v --open -oG ${OUT} ${TARGET}
 else
     >&2 echo "Error! <TARGET> not specified."
         echo "Usage: ./$(basename $BASH_SOURCE) <TARGET>"

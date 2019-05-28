@@ -8,14 +8,13 @@
 #               powerful JohnTheRipper password cracking tool.
 #               At the moment, it is solely intended for dictionary attacks.
 #
-# Usage:        ./autojohn.sh --info
+# Usage:        ./autojohn.sh --help|-h
+#               ./autojohn.sh --info
 #               ./autojohn.sh <HASHES_FILE>
 #               ./autojohn.sh <HASHES_FILE> <FORMAT> <SESSION_NAME>
 #
 #
 # --TODO--
-# - various checks (files, dirs, ...)
-# - detect number of cores (for Linux and FreeBSD)
 # - improve and optimize code
 # - ???
 #
@@ -27,7 +26,6 @@
 
 DICT_DIR=~/dictionaries     # each wordlist in this directory MUST be a ".txt" file
 POTS_DIR=~/.john            # here you will find cracked passwords
-CORES=4                     # number of parallel processes/tasks
 
 
 # FUNCTIONS --------------------------------------------------------------------
@@ -38,6 +36,8 @@ command_exists() {
 
 usage() {
     echo "Usage:"
+    echo "  - Show this help:"
+    echo "    ./autojohn.sh --help|-h"
     echo "  - Show information about dictionaries:"
     echo "    ./autojohn.sh --info"
     echo "  - List detected hash formats for file <HASHES_FILE>:"
@@ -136,10 +136,20 @@ else
         C=$(echo $STATUS | grep -c -F ', 0 left')
 
         if [[ $C -eq 1 ]] ; then
-	        echo "All passwords already found! Exiting..."
-	        echo
+            echo "All passwords already found! Exiting..."
+            echo
 
-	        exit 0
+            exit 0
+        fi
+
+        OS=$(uname -s)
+
+        if [[ $OS == "Linux" ]] ; then
+            CORES=$(grep -c ^processor /proc/cpuinfo)
+        elif [[ $OS == "FreeBSD" ]] ; then
+            CORES=$(sysctl -n hw.ncpu)
+        else
+            CORES=1
         fi
 
         N=$(cat $FILE | wc -l | tr -d ' ')
@@ -147,39 +157,37 @@ else
         echo "[+] Session name: $SESSION"
         echo "[+] Total hashes: $N"
         echo "[+] Hash format:  $FORMAT"
+        echo "[+] # of cores:   $CORES"
         echo
-
         echo "[START] $(date)"
         echo
 
         for DICT in $(ls -1Sr $DICT_DIR/*.txt) ; do
-	        echo "[>] $DICT"
+            echo "[>] $DICT"
 
-	        john --wordlist=$DICT --format=$FORMAT --nolog --fork=$CORES --session=$SESSION --pot=$POTS_DIR/$SESSION.pot $FILE >> $POTS_DIR/$SESSION.progress 2>&1
+            john --wordlist=$DICT --format=$FORMAT --nolog --fork=$CORES --session=$SESSION --pot=$POTS_DIR/$SESSION.pot $FILE >> $POTS_DIR/$SESSION.progress 2>&1
 
-	        STATUS=$(john --show --pot=$POTS_DIR/$SESSION.pot --format=$FORMAT $FILE | grep -F cracked)
+            STATUS=$(john --show --pot=$POTS_DIR/$SESSION.pot --format=$FORMAT $FILE | grep -F cracked)
 
-	        echo $STATUS
+            echo $STATUS
 
-	        C=$(echo $STATUS | grep -c -F ', 0 left')
+            C=$(echo $STATUS | grep -c -F ', 0 left')
 
-	        if [[ $C -eq 1 ]] ; then
-		        echo
-		        echo "Congratulation! All passwords found!"
-		        echo
-		        echo "[END] $(date)"
+            if [[ $C -eq 1 ]] ; then
                 echo
-                echo "Found passwords (saved in $POTS_DIR/$SESSION.pot):"
-                cat $POTS_DIR/$SESSION.pot | cut -d':' -f2 | sort -u
+                echo "Congratulations! All passwords found!"
 
-		        exit 0
-	        fi
+                break
+            fi
         done
 
         echo
         echo "[END] $(date)"
         echo
         echo "Found passwords (saved in $POTS_DIR/$SESSION.pot):"
+
         cat $POTS_DIR/$SESSION.pot | cut -d':' -f2 | sort -u
+
+        echo
     fi
 fi
