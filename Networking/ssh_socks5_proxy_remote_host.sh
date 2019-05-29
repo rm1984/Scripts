@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Author:       Riccardo Mollo (riccardomollo84@gmail.com)
 #
@@ -47,7 +47,6 @@ command_exists() {
 # CHECKS -----------------------------------------------------------------------
 
 declare -a CMDS=(
-"netstat"
 "ssh"
 );
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This script shows the RHEL 7 cluster name in the shell prompt.
 # Needs to be saved as: /etc/profile.d/prompt.sh

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 for PKG in $(pip freeze | cut -d'=' -f1) ; do
     pip install $PKG
