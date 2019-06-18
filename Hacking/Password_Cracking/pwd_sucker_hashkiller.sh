@@ -2,10 +2,10 @@
 #
 # Author:       Riccardo Mollo (riccardomollo84@gmail.com)
 #
-# Name:	        pwd_sucker_md5db.sh
+# Name:	        pwd_sucker_hashkiller.sh
 #
 # Description:  A script that fetches cracked passwords from the following site:
-#               https://www.nitrxgen.net/md5db/
+#               https://hashkiller.co.uk/
 #
 #
 # --TODO--
@@ -17,9 +17,9 @@
 
 # VARIABLES --------------------------------------------------------------------
 
-URL="https://www.nitrxgen.net/md5db/"
+URL="https://hashkiller.co.uk/"
 DICT_DIR=~/dictionaries
-DICT=$DICT_DIR/CUSTOM_md5db.txt
+DICT=$DICT_DIR/CUSTOM_hashkiller.txt
 
 
 # FUNCTIONS --------------------------------------------------------------------
@@ -47,7 +47,7 @@ done
 OUT_HTML=$(echo /tmp/.rnd-${RANDOM}.html)
 
 wget $URL -O $OUT_HTML
-cat $OUT_HTML | grep -F '<div class="ellipsis"' | cut -d'>' -f5 | cut -d'<' -f1 >> $DICT
+cat $OUT_HTML | grep -F '</span></td>' | grep -vF '<td><span' | awk '{print $1}' >> $DICT
 
 sort -u $DICT -o $DICT
 
