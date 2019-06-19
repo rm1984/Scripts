@@ -9,7 +9,8 @@
 #               installed and configured, and the TOR daemon must be running.
 #
 # Usage:        ./nmap_with_tor.sh <TARGET>
-#               <TARGET> can be a
+#               (<TARGET> can be an IP address or a FQDN; in the second case,
+#                the domain name is securely resolved using tor-resolve)
 #
 # Notes:        Please make sure that your TOR configuration file has the
 #               following lines:
