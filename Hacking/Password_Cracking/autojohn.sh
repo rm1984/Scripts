@@ -12,6 +12,7 @@
 #               ./autojohn.sh --info
 #               ./autojohn.sh <HASHES_FILE>
 #               ./autojohn.sh <HASHES_FILE> <FORMAT> <SESSION_NAME>
+#               ./autojohn.sh --sessions
 #               ./autojohn.sh --status <SESSION_NAME>
 #
 #
@@ -45,7 +46,9 @@ usage() {
     echo "    ./autojohn.sh <HASHES_FILE>"
     echo "  - Start cracking hashes with dictionary attack:"
     echo "    ./autojohn.sh <HASHES_FILE> <FORMAT> <SESSION_NAME>"
-    echo "  - Shows currently found passwords in a running session:"
+    echo "  - Show sessions (both finished and running):"
+    echo "    ./autojohn.sh --sessions"
+    echo "  - Show currently found passwords in a running session:"
     echo "    ./autojohn.sh --status <SESSION_NAME>"
 }
 
@@ -82,7 +85,7 @@ fi
 
 # MAIN -------------------------------------------------------------------------
 
-if [[ "$#" -le 3 ]] ; then
+if [[ ! "$#" -le 3 ]] ; then
     usage
 
     exit 1
@@ -103,6 +106,18 @@ else
             echo "[+] Dictionaries directory:  $DICT_DIR"
             echo "[+] Number of dictionaries:  $DICT_NUM"
             echo "[+] Total dictionaries size: $DICT_SIZ"
+            echo
+
+            exit 0
+        elif [[ "$FILE" == "--sessions" ]] ; then
+            for SESSION in $(ls -1 $POTS_DIR/*.pot | sed -r 's/.*\/(.*).pot.*/\1/') ; do
+                if [[ -f "$POTS_DIR/$SESSION.progress" ]] ; then
+                    echo "[R] $SESSION"
+                else
+                    echo "[+] $SESSION"
+                fi
+            done
+
             echo
 
             exit 0
