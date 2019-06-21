@@ -44,6 +44,8 @@ usage() {
     echo "    ./autojohn.sh <HASHES_FILE>"
     echo "  - Start cracking hashes with dictionary attack:"
     echo "    ./autojohn.sh <HASHES_FILE> <FORMAT> <SESSION_NAME>"
+    echo "  - Shows currently found passwords in a running session:"
+    echo "    ./autojohn.sh --status <SESSION_NAME>"
 }
 
 logo() {
@@ -79,7 +81,7 @@ fi
 
 # MAIN -------------------------------------------------------------------------
 
-if [[ "$#" -ne 1 && "$#" -ne 3 ]] ; then
+if [[ "$#" -le 3 ]] ; then
     usage
 
     exit 1
@@ -119,6 +121,27 @@ else
         echo
         echo "Now, to start cracking, run:"
         echo "./autojohn.sh $FILE <FORMAT> <SESSION_NAME>"
+
+        exit 0
+    elif [[ "$#" -eq 2 ]] ; then
+        logo
+
+        if [[ "$1" == "--status" ]] ; then
+            SESSION=$2
+            PROGRESS_FILE=$POTS_DIR/$SESSION.progress
+
+            if [[ -f "$PROGRESS_FILE" ]] ; then
+                echo "Found passwords in session \"$SESSION\"":
+                echo
+
+                cat $PROGRESS_FILE | grep '(' | grep -v DONE | grep -v Loaded | grep -v Node
+
+                echo
+            else
+                echo "No cracking is currently running for session \"$SESSION\"."
+                echo
+            fi
+        fi
 
         exit 0
     elif [[ "$#" -eq 3 ]] ; then
@@ -193,5 +216,7 @@ else
         fi
 
         echo
+
+        exit 0
     fi
 fi
