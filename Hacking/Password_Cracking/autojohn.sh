@@ -12,6 +12,7 @@
 #               ./autojohn.sh --info
 #               ./autojohn.sh <HASHES_FILE>
 #               ./autojohn.sh <HASHES_FILE> <FORMAT> <SESSION_NAME>
+#               ./autojohn.sh --status <SESSION_NAME>
 #
 #
 # --TODO--
@@ -24,8 +25,8 @@
 
 # VARIABLES --------------------------------------------------------------------
 
-DICT_DIR=~/dictionaries     # each wordlist in this directory MUST be a ".txt" file
-POTS_DIR=~/.john            # here you will find cracked passwords
+DICT_DIR=~/dictionaries     # each wordlist in this directory *MUST* be a ".txt" file
+POTS_DIR=~/.john            # here you will find the cracked passwords for each session
 
 
 # FUNCTIONS --------------------------------------------------------------------
