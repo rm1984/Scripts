@@ -114,7 +114,7 @@ else
         echo "Detected hash formats:"
         echo
 
-        john --list=unkonwn $FILE 2>&1 | grep -F -- '--format=' | grep -v '\$' | cut -d'=' -f2 | cut -d'"' -f1 | sort | awk '{ $2 = $1 ; $1 = "-" ; print $0 }'
+        john --list=unknown $FILE 2>&1 | grep -F -- '--format=' | grep -v '\$' | cut -d'=' -f2 | cut -d'"' -f1 | sort | awk '{ $2 = $1 ; $1 = "-" ; print $0 }'
 
         echo
         echo "Now, to start cracking, run:"
@@ -132,7 +132,9 @@ else
 
         FORMAT=$2
         SESSION=$3
-        STATUS=$(john --show --pot=$POTS_DIR/$SESSION.pot --format=$FORMAT $FILE | grep -F cracked)
+        POT_FILE=$POTS_DIR/$SESSION.pot
+        PROGRESS_FILE=$POTS_DIR/$SESSION.progress
+        STATUS=$(john --show --pot=$POT_FILE --format=$FORMAT $FILE | grep -F cracked)
         C=$(echo $STATUS | grep -c -F ', 0 left')
 
         if [[ $C -eq 1 ]] ; then
@@ -165,12 +167,10 @@ else
         for DICT in $(ls -1Sr $DICT_DIR/*.txt) ; do
             echo "[>] $DICT"
 
-            john --wordlist=$DICT --format=$FORMAT --nolog --fork=$CORES --session=$SESSION --pot=$POTS_DIR/$SESSION.pot $FILE >> $POTS_DIR/$SESSION.progress 2>&1
+            john --wordlist=$DICT --format=$FORMAT --nolog --fork=$CORES --session=$SESSION --pot=$POT_FILE $FILE >> $PROGRESS_FILE 2>&1
 
-            STATUS=$(john --show --pot=$POTS_DIR/$SESSION.pot --format=$FORMAT $FILE | grep -F cracked)
-
+            STATUS=$(john --show --pot=$POT_FILE --format=$FORMAT $FILE | grep -F cracked)
             echo $STATUS
-
             C=$(echo $STATUS | grep -c -F ', 0 left')
 
             if [[ $C -eq 1 ]] ; then
@@ -184,9 +184,13 @@ else
         echo
         echo "[END] $(date)"
         echo
-        echo "Found passwords (saved in $POTS_DIR/$SESSION.pot):"
+        echo "Found passwords (saved in $POT_FILE):"
 
-        cat $POTS_DIR/$SESSION.pot | cut -d':' -f2 | sort -u
+        cat $POT_FILE | cut -d':' -f2 | sort -u
+
+        if [[ -f "$PROGRESS_FILE" ]] ; then
+            rm -f $PROGRESS_FILE
+        fi
 
         echo
     fi
