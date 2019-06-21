@@ -38,18 +38,25 @@ command_exists() {
 
 usage() {
     echo "Usage:"
+    echo
     echo "  - Show this help:"
     echo "    ./autojohn.sh --help|-h"
+    echo
     echo "  - Show information about dictionaries:"
     echo "    ./autojohn.sh --info"
+    echo
     echo "  - List detected hash formats for file <HASHES_FILE>:"
     echo "    ./autojohn.sh <HASHES_FILE>"
+    echo
     echo "  - Start cracking hashes with dictionary attack:"
     echo "    ./autojohn.sh <HASHES_FILE> <FORMAT> <SESSION_NAME>"
+    echo
     echo "  - Show sessions (both finished and running):"
     echo "    ./autojohn.sh --sessions"
+    echo
     echo "  - Show currently found passwords in a running session:"
     echo "    ./autojohn.sh --status <SESSION_NAME>"
+    echo
 }
 
 logo() {
@@ -85,7 +92,7 @@ fi
 
 # MAIN -------------------------------------------------------------------------
 
-if [[ ! "$#" -le 3 ]] ; then
+if [[ "$#" -eq 0 || ! "$#" -le 3 ]] ; then
     usage
 
     exit 1
