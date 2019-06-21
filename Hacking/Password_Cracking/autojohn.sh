@@ -18,7 +18,7 @@
 #
 # --TODO--
 # - improve and optimize code
-# - ???
+# - better checks for command line parameters
 #
 #
 ################################################################################
@@ -90,16 +90,16 @@ if [[ ! "$#" -le 3 ]] ; then
 
     exit 1
 else
-    FILE=$1
+    PARAM=$1
 
     if [[ "$#" -eq 1 ]] ; then
         logo
 
-        if [[ "$FILE" == "--help" || "$FILE" == "-h" ]] ; then
+        if [[ "$PARAM" == "--help" || "$PARAM" == "-h" ]] ; then
             usage
 
             exit 0
-        elif [[ "$FILE" == "--info" ]] ; then
+        elif [[ "$PARAM" == "--info" ]] ; then
             DICT_NUM=$(ls -1 $DICT_DIR/*txt | wc -l | awk '{ print $1 }')
             DICT_SIZ=$(du -ch $DICT_DIR/*txt | tail -1 | awk '{ print $1 }')
 
@@ -109,7 +109,7 @@ else
             echo
 
             exit 0
-        elif [[ "$FILE" == "--sessions" ]] ; then
+        elif [[ "$PARAM" == "--sessions" ]] ; then
             for SESSION in $(ls -1 $POTS_DIR/*.pot | sed -r 's/.*\/(.*).pot.*/\1/') ; do
                 if [[ -f "$POTS_DIR/$SESSION.progress" ]] ; then
                     echo "[R] $SESSION"
@@ -123,8 +123,18 @@ else
             exit 0
         fi
 
+        if [[ $PARAM == --* ]] ; then
+            echo "Wrong parameter: $PARAM"
+            echo
+
+            exit 1
+        else
+            FILE="$PARAM"
+        fi
+
         if [[ ! -f "$FILE" ]] ; then
             echo "Error! Hashes file not found: $FILE"
+            echo
 
             exit 1
         fi
@@ -144,6 +154,14 @@ else
 
         if [[ "$1" == "--status" ]] ; then
             SESSION=$2
+
+            if [[ $SESSION == --* ]] ; then
+                echo "Wrong value for <SESSION_NAME>: $SESSION"
+                echo
+
+                exit 1
+            fi
+
             PROGRESS_FILE=$POTS_DIR/$SESSION.progress
 
             if [[ -f "$PROGRESS_FILE" ]] ; then
@@ -165,12 +183,28 @@ else
 
         if [[ ! -f "$FILE" ]] ; then
             echo "Error! Hashes file not found: $FILE"
+            echo
 
             exit 1
         fi
 
         FORMAT=$2
         SESSION=$3
+
+        if [[ $FORMAT == --* ]] ; then
+            echo "Wrong value for <FORMAT>: $FORMAT"
+            echo
+
+            exit 1
+        fi
+
+        if [[ $SESSION == --* ]] ; then
+            echo "Wrong value for <SESSION_NAME>: $SESSION"
+            echo
+
+            exit 1
+        fi
+
         POT_FILE=$POTS_DIR/$SESSION.pot
         PROGRESS_FILE=$POTS_DIR/$SESSION.progress
         STATUS=$(john --show --pot=$POT_FILE --format=$FORMAT $FILE | grep -F cracked)
