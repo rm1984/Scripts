@@ -47,6 +47,8 @@ done
 
 # MAIN -------------------------------------------------------------------------
 
+apt list --installed | grep -vF 'Listing...' | cut -d'/' -f1 > /etc/INSTALLED_PACKAGES
+
 echo "Directories to backup:"
 echo "${DIRS_TO_BACKUP[@]}" | tr ' ' '\n'
 echo
