@@ -135,9 +135,9 @@ else
             echo
 
             exit 1
-        else
-            FILE="$PARAM"
         fi
+
+        FILE="$PARAM"
 
         if [[ ! -f "$FILE" ]] ; then
             echo "Error! Hashes file not found: $FILE"
@@ -188,15 +188,16 @@ else
     elif [[ "$#" -eq 3 ]] ; then
         logo
 
+        FILE=$1
+        FORMAT=$2
+        SESSION=$3
+
         if [[ ! -f "$FILE" ]] ; then
             echo "Error! Hashes file not found: $FILE"
             echo
 
             exit 1
         fi
-
-        FORMAT=$2
-        SESSION=$3
 
         if [[ $FORMAT == --* ]] ; then
             echo "Wrong value for <FORMAT>: $FORMAT"
