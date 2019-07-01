@@ -36,6 +36,13 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1 || { echo "Command not found: $1" 1>&2 ; exit 1 ; }
 }
 
+logo() {
+    echo "                        "
+    echo " /\   _|_ _   | _ |_ ._ "
+    echo "/--\|_||_(_)\_|(_)| || |"
+    echo "                        "
+}
+
 usage() {
     echo "Usage:"
     echo
@@ -59,13 +66,6 @@ usage() {
     echo
 }
 
-logo() {
-    echo "                        "
-    echo " /\   _|_ _   | _ |_ ._ "
-    echo "/--\|_||_(_)\_|(_)| || |"
-    echo "                        "
-}
-
 
 # CHECKS -----------------------------------------------------------------------
 
@@ -81,6 +81,14 @@ if [[ ! -d "$DICT_DIR" ]] ; then
     echo "Error! Dictionaries directory not found: $DICT_DIR"
 
     exit 1
+else
+    DICT_NUM=$(ls -1q $DICT_DIR/*.txt 2> /dev/null | wc -l)
+
+    if [[ "$DICT_NUM" -eq 0 ]] ; then
+        echo "Error! No *.txt dictionaries found!"
+
+        exit 1
+    fi
 fi
 
 if [[ ! -d "$POTS_DIR" ]] ; then
@@ -146,14 +154,24 @@ else
             exit 1
         fi
 
-        echo "Detected hash formats:"
-        echo
+        readarray -t FORMATS < <(john --list=unknown $FILE 2>&1 | awk -F\" '{ print $2 }' | sed -e 's/--format=//g' | sort -u | sed '/^$/d')
 
-        john --list=unknown $FILE 2>&1 | grep -F -- '--format=' | grep -v '\$' | cut -d'=' -f2 | cut -d'"' -f1 | sort | awk '{ $2 = $1 ; $1 = "-" ; print $0 }'
+        if [[ ${#FORMATS[@]} -eq 0 ]] ; then
+            echo "No valid hash formats detected!!! :-("
+            echo
+        else
+            echo "Detected hash formats:"
+            echo
 
-        echo
-        echo "Now, to start cracking, run:"
-        echo "./autojohn.sh $FILE <FORMAT> <SESSION_NAME>"
+            for F in "${FORMATS[@]}" ; do
+                echo "- $F"
+            done
+
+            echo
+            echo "Now, to start cracking, run:"
+            echo "./autojohn.sh $FILE <FORMAT> <SESSION_NAME>"
+            echo
+        fi
 
         exit 0
     elif [[ "$#" -eq 2 ]] ; then
@@ -267,7 +285,7 @@ else
         echo
         echo "Found passwords (saved in $POT_FILE):"
 
-        cat $POT_FILE | cut -d':' -f2 | sort -u
+        john --show --pot=$POT_FILE --format=$FORMAT $FILE | grep -F ':'
 
         if [[ -f "$PROGRESS_FILE" ]] ; then
             rm -f $PROGRESS_FILE
