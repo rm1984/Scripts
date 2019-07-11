@@ -154,8 +154,11 @@ else
             exit 1
         fi
 
-        readarray -t FORMATS < <(john --list=unknown $FILE 2>&1 | awk -F\" '{ print $2 }' | sed -e 's/--format=//g' | sort -u | sed '/^$/d')
-        # add this hash:         john --list=unknown $FILE 2>&1 | grep -F 'Loaded' | cut -d'(' -f2 | cut -d' ' -f1 | tr -d ','
+        readarray -t FORMATS < <(
+        {
+            john --list=unknown $FILE 2>&1 | awk -F\" '{ print $2 }' | sed -e 's/--format=//g' | sort -u | sed '/^$/d'
+            john --list=unknown $FILE 2>&1 | grep -F 'Loaded' | cut -d'(' -f2 | cut -d' ' -f1 | tr -d ','
+        })
 
         if [[ ${#FORMATS[@]} -eq 0 ]] ; then
             echo "No valid hash formats detected!!! :-("
@@ -163,6 +166,8 @@ else
         else
             echo "Detected hash formats:"
             echo
+
+            FORMATS=($(echo ${FORMATS[@]} | tr ' ' '\n' | sort -u))
 
             for F in "${FORMATS[@]}" ; do
                 echo "- $F"
