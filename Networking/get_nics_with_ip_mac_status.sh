@@ -12,6 +12,8 @@
 #
 # --TODO--
 # - Fix code to get NICs list on RHEL 7
+# - Fix code 'cause output is messed up for DOWN interfaces
+# - Do not consider IPv6 (for now)
 # - ???
 #
 #
@@ -21,7 +23,7 @@
 # MAIN -------------------------------------------------------------------------
 
 display_usage() {
-    echo "Usage: $0" 
+    echo "Usage: $0"
 }
 
 if [[ $# -ne 0 ]] ; then
