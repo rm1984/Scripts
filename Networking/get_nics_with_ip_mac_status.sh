@@ -12,8 +12,6 @@
 #
 # --TODO--
 # - Fix code to get NICs list on RHEL 7
-# - Fix code 'cause output is messed up for DOWN interfaces
-# - Do not consider IPv6 (for now)
 # - ???
 #
 #
@@ -33,7 +31,7 @@ if [[ $# -ne 0 ]] ; then
 else
     # The following command *does not* work on RHEL 7 (ifconfig output format has changed)
     #for NIC in $(ifconfig -a | sed 's/[ \t].*//;/^\(lo\|\)$/d;/:/d') ; do
-    for NIC in $(ifconfig -s | grep -v Iface | awk '{print $1}' | grep -v lo) ; do
+    for NIC in $(ifconfig -s | grep -v Iface | awk '{print $1}' | grep -v lo | grep -v inet6) ; do
         MAC=$(ip addr show $NIC | grep 'link/ether' | awk '{print $2}')
         STATUS=$(ip addr show $NIC | grep -o 'state [^ ,]\+' | sed 's/state\ //g')
 
