@@ -28,7 +28,8 @@ OPENVAS_PASS='password'
 cat > /etc/apt/sources.list.d/custom.list <<EOL
 deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
 deb [arch=amd64] http://packages.microsoft.com/repos/vscode stable main
-deb [arch=amd64] https://packages.microsoft.com/ubuntu/18.04/prod bionic maindeb [arch=amd64] https://packages.microsoft.com/debian/9/prod stretch main
+deb [arch=amd64] https://packages.microsoft.com/ubuntu/18.04/prod bionic main
+deb [arch=amd64] https://packages.microsoft.com/debian/10/prod buster main
 deb [arch=amd64] https://repo.skype.com/deb stable main
 deb http://gandalfn.ovh/debian buster-juno main contrib os-patches
 deb http://linux.teamviewer.com/deb stable main
@@ -37,20 +38,20 @@ deb http://ppa.launchpad.net/elementary-os/stable/ubuntu bionic main
 deb http://ppa.launchpad.net/makehuman-official/makehuman-11x/ubuntu devel main
 deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main
 deb http://prerelease.keybase.io/deb stable main
-deb http://repo.mysql.com/apt/debian/ stretch mysql-8.0
-deb http://repo.mysql.com/apt/debian/ stretch mysql-apt-config
-deb http://repo.mysql.com/apt/debian/ stretch mysql-tools
+deb http://repo.mysql.com/apt/debian/ buster mysql-8.0
+deb http://repo.mysql.com/apt/debian/ buster mysql-apt-config
+deb http://repo.mysql.com/apt/debian/ buster mysql-tools
 deb http://repository.spotify.com stable non-free
 deb https://deb.nodesource.com/node_11.x jessie main
-deb https://download.docker.com/linux/debian stretch stable
+deb https://download.docker.com/linux/debian buster stable
 deb https://http.kali.org/kali kali-rolling main non-free contrib
-deb https://mega.nz/linux/MEGAsync/Debian_9.0/ ./
+deb https://mega.nz/linux/MEGAsync/Debian_10.0/ ./
 deb https://wire-app.wire.com/linux/debian stable main
 deb-src http://ppa.launchpad.net/elementary-add-team/icons/ubuntu xenial main
 deb-src http://ppa.launchpad.net/elementary-os/stable/ubuntu bionic main
 deb-src http://ppa.launchpad.net/makehuman-official/makehuman-11x/ubuntu devel main
 deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main
-deb-src http://repo.mysql.com/apt/debian/ stretch mysql-8.0
+deb-src http://repo.mysql.com/apt/debian/ buster mysql-8.0
 deb-src https://deb.nodesource.com/node_11.x jessie main
 deb-src https://http.kali.org/kali kali-rolling main non-free contrib
 EOL
