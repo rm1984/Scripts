@@ -12,17 +12,37 @@
 #
 # --TODO--
 # - Fix code to get NICs list on RHEL 7
+# - Add support for other Unix systems
 # - ???
 #
 #
 ################################################################################
 
 
-# MAIN -------------------------------------------------------------------------
+# FUNCTIONS --------------------------------------------------------------------
+
+command_exists() {
+    command -v "$1" >/dev/null 2>&1 || { echo "ERROR! Command not found: $1" 1>&2 ; exit 1 ; }
+}
 
 display_usage() {
     echo "Usage: $0"
 }
+
+
+# CHECKS -----------------------------------------------------------------------
+
+declare -a CMDS=(
+"ifconfig"
+"ip"
+);
+
+for CMD in ${CMDS[@]} ; do
+    command_exists $CMD
+done
+
+
+# MAIN -------------------------------------------------------------------------
 
 if [[ $# -ne 0 ]] ; then
     display_usage
@@ -33,7 +53,7 @@ else
     #for NIC in $(ifconfig -a | sed 's/[ \t].*//;/^\(lo\|\)$/d;/:/d') ; do
     for NIC in $(ifconfig -s | grep -v Iface | awk '{print $1}' | grep -v lo | grep -v inet6) ; do
         MAC=$(ip addr show $NIC | grep 'link/ether' | awk '{print $2}')
-        STATUS=$(ip addr show $NIC | grep -o 'state [^ ,]\+' | sed 's/state\ //g')
+        STATUS=$(ip -4 addr show $NIC | grep -o 'state [^ ,]\+' | sed 's/state\ //g')
 
         if [[ "$STATUS" != "UP" ]] ; then
             printf "%-20s %-18s %-10s %-8s\n" $MAC " " $NIC $STATUS
@@ -46,7 +66,7 @@ else
                 IFACE=$(echo $ROW | awk 'NF>1{print $NF}')
 
                 printf "%-20s %-18s %-10s %-8s\n" $MAC $IP $IFACE $STATUS
-            done < <(ip addr show $NIC | grep inet)
+            done < <(ip -4 addr show $NIC | grep inet)
         fi
     done
 fi
