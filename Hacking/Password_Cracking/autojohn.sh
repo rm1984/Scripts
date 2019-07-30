@@ -125,13 +125,19 @@ else
 
             exit 0
         elif [[ "$PARAM" == "--sessions" ]] ; then
-            for SESSION in $(ls -1 $POTS_DIR/*.pot | sed -r 's/.*\/(.*).pot.*/\1/') ; do
-                if [[ -f "$POTS_DIR/$SESSION.progress" ]] ; then
-                    echo "[R] $SESSION"
-                else
-                    echo "[+] $SESSION"
-                fi
-            done
+            N=$(ls -1 $POTS_DIR/*.pot | wc -l | awk '{ print $1 }')
+
+            if [[ "$N" -eq 0 ]] ; then
+                echo "No sessions found (pots directory seems empty)."
+            else
+                for SESSION in $(ls -1 $POTS_DIR/*.pot | sed -r 's/.*\/(.*).pot.*/\1/') ; do
+                    if [[ -f "$POTS_DIR/$SESSION.progress" ]] ; then
+                        echo "[R] $SESSION"
+                    else
+                        echo "[+] $SESSION"
+                    fi
+                done
+            fi
 
             echo
 

@@ -8,6 +8,8 @@ fi
 
 IP=$1
 
+D=$(date +"%a %d %h %Y at %T")
+echo "Starting monitoring on $D"
 echo -n "Pinging $IP "
 
 until ping -4 -D -c 1 -n -O -q -W 1 "$IP" > /dev/null 2>&1 ; do
