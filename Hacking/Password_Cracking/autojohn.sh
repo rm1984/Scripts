@@ -26,7 +26,7 @@
 
 # VARIABLES --------------------------------------------------------------------
 
-DICT_DIR=~/dictionaries     # each wordlist in this directory *MUST* be a ".txt" file
+DICT_DIR=~/DICTIONARIES     # each wordlist in this directory *MUST* be a ".txt" file
 POTS_DIR=~/.john            # here you will find the cracked passwords for each session
 
 
