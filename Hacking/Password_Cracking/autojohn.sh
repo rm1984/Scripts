@@ -125,7 +125,7 @@ else
 
             exit 0
         elif [[ "$PARAM" == "--sessions" ]] ; then
-            N=$(ls -1 $POTS_DIR/*.pot | wc -l | awk '{ print $1 }')
+            N=$(ls -1 $POTS_DIR/*.pot 2> /dev/null | wc -l | awk '{ print $1 }')
 
             if [[ "$N" -eq 0 ]] ; then
                 echo "No sessions found (pots directory seems empty)."
