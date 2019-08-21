@@ -1,0 +1,16 @@
+alias grep='grep --color=auto'
+alias ls='ls --color'
+alias ll='ls -l'
+alias la='ls -A'
+alias l='ls -CF'
+alias free='freecolor -t -m -o'
+alias watch='gnu-watch'
+ 
+export HISTTIMEFORMAT='%F %T '
+export PAGER=less
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+[[ $PS1 && -f /usr/local/share/bash-completion/bash_completion.sh ]] && source /usr/local/share/bash-completion/bash_completion.sh
+
+[[ $- = *i* ]] && source /usr/local/src/GIT/liquidprompt/liquidprompt
