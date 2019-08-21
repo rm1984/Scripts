@@ -11,9 +11,10 @@
 # Usage:        ./autojohn.sh --help|-h
 #               ./autojohn.sh --info
 #               ./autojohn.sh <HASHES_FILE>
-#               ./autojohn.sh <HASHES_FILE> <FORMAT> <SESSION_NAME>
+#               ./autojohn.sh <HASHES_FILE> <FORMAT> <SESSION_NAME> [<RULE>]
 #               ./autojohn.sh --sessions
 #               ./autojohn.sh --status <SESSION_NAME>
+#               ./autojohn.sh --rules
 #
 #
 # --TODO--
@@ -56,13 +57,17 @@ usage() {
     echo "    ./autojohn.sh <HASHES_FILE>"
     echo
     echo "  - Start cracking hashes with dictionary attack:"
-    echo "    ./autojohn.sh <HASHES_FILE> <FORMAT> <SESSION_NAME>"
+    echo "    ./autojohn.sh <HASHES_FILE> <FORMAT> <SESSION_NAME> [<RULE>]"
+    echo "    (warning: with rules like \"EXTRA\" or \"ALL\" it may take *ages*)"
     echo
     echo "  - Show sessions (both finished and running):"
     echo "    ./autojohn.sh --sessions"
     echo
     echo "  - Show currently found passwords in a running session:"
     echo "    ./autojohn.sh --status <SESSION_NAME>"
+    echo
+    echo "  - List available (optional) rules:"
+    echo "    ./autojohn.sh --rules"
     echo
 }
 
@@ -100,7 +105,7 @@ fi
 
 # MAIN -------------------------------------------------------------------------
 
-if [[ "$#" -eq 0 || ! "$#" -le 3 ]] ; then
+if [[ "$#" -eq 0 || ! "$#" -le 4 ]] ; then
     usage
 
     exit 1
@@ -134,10 +139,16 @@ else
                     if [[ -f "$POTS_DIR/$SESSION.progress" ]] ; then
                         echo "[R] $SESSION"
                     else
-                        echo "[+] $SESSION"
+                        echo "[.] $SESSION"
                     fi
                 done
             fi
+
+            echo
+
+            exit 0
+        elif [[ "$PARAM" == "--rules" ]] ; then
+            john --list=rules | sort -h
 
             echo
 
@@ -181,7 +192,7 @@ else
 
             echo
             echo "Now, to start cracking, run:"
-            echo "./autojohn.sh $FILE <FORMAT> <SESSION_NAME>"
+            echo "./autojohn.sh $FILE <FORMAT> <SESSION_NAME> [<RULE>]"
             echo
         fi
 
@@ -215,12 +226,24 @@ else
         fi
 
         exit 0
-    elif [[ "$#" -eq 3 ]] ; then
+    elif [[ "$#" -eq 3 || "$#" -eq 4 ]] ; then
         logo
 
         FILE=$1
         FORMAT=$2
         SESSION=$3
+        RULE=""
+
+        if [[ "$#" -eq 4 ]] ; then
+            RULE=$4
+
+            if [[ $(john --list=rules | grep -c -i -w $RULE) -eq 0 ]] ; then
+                echo "Error! Rule does not exist: $RULE"
+                echo
+
+                exit 1
+            fi
+        fi
 
         if [[ ! -f "$FILE" ]] ; then
             echo "Error! Hashes file not found: $FILE"
@@ -270,6 +293,13 @@ else
         echo "[+] Session name: $SESSION"
         echo "[+] Total hashes: $N"
         echo "[+] Hash format:  $FORMAT"
+
+        if [[ -z "$RULE" ]] ; then
+            echo "[+] Rule:         *DEFAULT*"
+        else
+            echo "[+] Rule:         $RULE"
+        fi
+
         echo "[+] # of cores:   $CORES"
         echo
         echo "[START] $(date)"
@@ -278,7 +308,11 @@ else
         for DICT in $(ls -1Sr $DICT_DIR/*.txt) ; do
             echo "[>] $DICT"
 
-            john --wordlist=$DICT --format=$FORMAT --nolog --fork=$CORES --session=$SESSION --pot=$POT_FILE $FILE >> $PROGRESS_FILE 2>&1
+            if [[ -z "$RULE" ]] ; then
+                john --wordlist=$DICT --format=$FORMAT --nolog --fork=$CORES --session=$SESSION --pot=$POT_FILE $FILE >> $PROGRESS_FILE 2>&1
+            else
+                john --wordlist=$DICT --format=$FORMAT --rules=$RULE --nolog --fork=$CORES --session=$SESSION --pot=$POT_FILE $FILE >> $PROGRESS_FILE 2>&1
+            fi
 
             STATUS=$(john --show --pot=$POT_FILE --format=$FORMAT $FILE | grep -F cracked)
             echo $STATUS
