@@ -82,24 +82,24 @@ fi
 
 mkdir -p "${REPORTSD}"
 
-for FOLDER_ID in $(cat scans | jq -M ".scans" | grep -F '"id":' | awk '{ print $NF }' | tr -d ',' | sort -h) ; do
+for SCANID in $(cat scans | jq -M ".scans" | grep -F '"id":' | awk '{ print $NF }' | tr -d ',' | sort -h) ; do
     curl -s -k  -X $'POST' \
     -H $"Host: ${HOSTADDR}:8834" -H $'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0' -H $'Accept: */*' -H $'Accept-Language: en-US,en;q=0.5' -H $'Accept-Encoding: gzip, deflate' -H $"Referer: https://${HOSTADDR}:8834/" -H $'Content-Type: application/json' -H $'X-API-Token: 00000000-0000-0000-0000-000000000000' -H $"X-Cookie: token=${AUTH}" -H $'Content-Length: 19' -H $'Connection: close' \
     --data-binary $'{\"format\":\"nessus\"}' \
-    $"https://${HOSTADDR}:8834/scans/${FOLDER_ID}/export?limit=2500" -o $FOLDER_ID.json
+    $"https://${HOSTADDR}:8834/scans/${SCANID}/export?limit=2500" -o $SCANID.json
 
-    TOKEN=$(cat $FOLDER_ID.json | jsonlint -f | grep -F '"token"' | awk '{ print $NF }' | tr -d '"')
+    TOKEN=$(cat $SCANID.json | jsonlint -f | grep -F '"token"' | awk '{ print $NF }' | tr -d '"')
 
     if [[ ! -z "$TOKEN" ]] ; then
-        echo -n "Folder ID: ${FOLDER_ID} (token: ${TOKEN}) ... "
+        echo -n "Scan ID: ${SCANID} (token: ${TOKEN}) ... "
 
         sleep $SLEEPSEC
 
         curl -s -k  -X $'GET' \
         -H $"Host: ${HOSTADDR}:8834" -H $'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0' -H $'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H $'Accept-Language: en-US,en;q=0.5' -H $'Accept-Encoding: gzip, deflate' -H $"Referer: https://${HOSTADDR}:8834/" -H $'Connection: close' -H $'Upgrade-Insecure-Requests: 1' \
-        $"https://${HOSTADDR}:8834/tokens/${TOKEN}/download" -o ${REPORTSD}/report_${FOLDER_ID}.gz
+        $"https://${HOSTADDR}:8834/tokens/${TOKEN}/download" -o ${REPORTSD}/report_${SCANID}.gz
 
-        gzip -t ${REPORTSD}/report_${FOLDER_ID}.gz 2>/dev/null
+        gzip -t ${REPORTSD}/report_${SCANID}.gz 2>/dev/null
 
         if [[ $? -eq 0 ]] ; then
             gunzip ${REPORTSD}/report_${FOLDER_ID}.gz
