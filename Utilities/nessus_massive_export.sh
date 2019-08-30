@@ -63,7 +63,7 @@ AUTH=$(curl -s -k  -X $'POST' \
     $"https://${HOSTADDR}:8834/session" | jsonlint -f | grep token | awk '{ print $4 }' | tr -d '"')
 
 if [[ -z "$AUTH" ]] ; then
-    echo "Error! Cannot authenticate."
+    echo "Error! Can not authenticate."
     exit 1
 fi
 
