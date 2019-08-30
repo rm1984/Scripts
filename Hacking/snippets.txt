@@ -1,0 +1,15 @@
+# resolve a domain name via TOR
+tor-resolve www.example.com localhost:9050
+
+# enumerate directories and files using DirSearch via TOR
+torify dirsearch -u https://www.example.com -e php -f --random-user-agents --suppress-empty -x 404,403
+
+# dump a DB using SQLMap via TOR
+sqlmap --check-tor --tor --random-agent -u 'https://www.example.com/test.php?id=1'
+
+# scan a WordPress site using WPScan via TOR
+wpscan --url www.example.com --rua --disable-tls-checks -e vp,vt,cb,dbe,u --proxy socks5://127.0.0.1:9050
+
+# fetch a web content using cURL via TOR
+curl -s --socks5-hostname 127.0.0.1:9050 https://www.example.com
+

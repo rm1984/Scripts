@@ -55,3 +55,4 @@ if [[ -d ${OUTDIR} ]] ; then
 fi
 
 aria2c -d ${OUTDIR} --bt-metadata-only=true --bt-save-metadata=true --listen-port=6881 "${MAGNET}"
+
