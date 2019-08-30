@@ -45,6 +45,7 @@ command_exists() {
 declare -a CMDS=(
 "curl"
 "gunzip"
+"gzip"
 "jq"
 "jsonlint"
 );
