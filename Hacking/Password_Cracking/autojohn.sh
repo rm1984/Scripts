@@ -15,6 +15,7 @@
 #               ./autojohn.sh --sessions
 #               ./autojohn.sh --status <SESSION_NAME>
 #               ./autojohn.sh --rules
+#               ./autojohn.sh --polish
 #
 #
 # --TODO--
@@ -69,12 +70,21 @@ usage() {
     echo "  - List available (optional) rules:"
     echo "    ./autojohn.sh --rules"
     echo
+    echo "  - Clean all the dictionaries by removing non-printable characters"
+    echo "    and DOS newlines (CR-LF):"
+    echo "    ./autojohn.sh --polish"
+    echo "    (warning: depending on the size of the dictionaries, it may take a"
+    echo "     very long time and require a lot of temporary disk space)"
+    echo
 }
 
 
 # CHECKS -----------------------------------------------------------------------
 
 declare -a CMDS=(
+"basename"
+"dos2unix"
+"tr"
 "john"
 );
 
@@ -150,6 +160,46 @@ else
         elif [[ "$PARAM" == "--rules" ]] ; then
             john --list=rules | sort -h
 
+            echo
+
+            exit 0
+        elif [[ "$PARAM" == "--polish" ]] ; then
+            export LC_CTYPE=C
+            export LC_ALL=C
+
+            CSV=$POTS_DIR/polished_dicts.csv
+
+            echo "FILENAME;START_TIME;END_TIME;OLD_SIZE;NEW_SIZE" > $CSV
+
+            for DICT in $(ls -1Sr $DICT_DIR/*.txt) ; do
+                BNDICT=$(basename $DICT)
+
+                echo "[>] $BNDICT"
+
+                STIME=$(date)
+                OLDSIZE=$(du -sh $DICT | awk '{ print $1 }')
+
+                echo "    Started at:    $STIME"
+                echo "    Current size:  $OLDSIZE"
+
+                NEWDICT="${DICT}.NEW"
+
+                tr -dc '[:print:]\n\r' < $DICT > $NEWDICT
+                dos2unix $NEWDICT > /dev/null 2>&1
+
+                NEWSIZE=$(du -sh $NEWDICT | awk '{ print $1 }')
+                ETIME=$(date)
+
+                mv $NEWDICT $DICT
+
+                echo "    New size:      $NEWSIZE"
+                echo "    Finished at:   $ETIME"
+                echo "$BNDICT;$STIME;$ETIME;$OLDSIZE;$NEWSIZE" >> $CSV
+                echo
+            done
+
+            echo "Results can also be found in the following CSV file:"
+            echo "$CSV"
             echo
 
             exit 0
@@ -306,7 +356,9 @@ else
         echo
 
         for DICT in $(ls -1Sr $DICT_DIR/*.txt) ; do
-            echo "[>] $DICT"
+            BNDICT=$(basename $DICT)
+
+            echo "[>] $BNDICT"
 
             if [[ -z "$RULE" ]] ; then
                 john --wordlist=$DICT --format=$FORMAT --nolog --fork=$CORES --session=$SESSION --pot=$POT_FILE $FILE >> $PROGRESS_FILE 2>&1
@@ -332,6 +384,10 @@ else
         echo "Found passwords (saved in $POT_FILE):"
 
         john --show --pot=$POT_FILE --format=$FORMAT $FILE | grep -F ':'
+
+        if [[ $? -ne 0 ]] ; then
+            echo "None :-("
+        fi
 
         if [[ -f "$PROGRESS_FILE" ]] ; then
             rm -f $PROGRESS_FILE

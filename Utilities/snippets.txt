@@ -1,0 +1,2 @@
+# remove all binary non-printable characters from a text file
+tr -dc '[:print:]\n\r' < in.file > out.file
