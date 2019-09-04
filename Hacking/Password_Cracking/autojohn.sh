@@ -71,7 +71,7 @@ usage() {
     echo "    ./autojohn.sh --rules"
     echo
     echo "  - Clean all the dictionaries by removing non-printable characters"
-    echo "    and DOS newlines (CR-LF):"
+    echo "    and DOS newlines (CR-LF) and finally by (unique-)sorting them:"
     echo "    ./autojohn.sh --polish"
     echo "    (warning: depending on the size of the dictionaries, it may take a"
     echo "     very long time and require a lot of temporary disk space)"
@@ -84,8 +84,8 @@ usage() {
 declare -a CMDS=(
 "basename"
 "dos2unix"
-"tr"
 "john"
+"tr"
 );
 
 for CMD in ${CMDS[@]} ; do
@@ -186,11 +186,11 @@ else
 
                 tr -dc '[:print:]\n\r' < $DICT > $NEWDICT
                 dos2unix $NEWDICT > /dev/null 2>&1
+                sort -u $NEWDICT > $DICT 2>&1
+                rm $NEWDICT
 
-                NEWSIZE=$(du -sh $NEWDICT | awk '{ print $1 }')
+                NEWSIZE=$(du -sh $DICT | awk '{ print $1 }')
                 ETIME=$(date)
-
-                mv $NEWDICT $DICT
 
                 echo "    New size:      $NEWSIZE"
                 echo "    Finished at:   $ETIME"
