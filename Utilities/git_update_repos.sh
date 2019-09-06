@@ -45,7 +45,7 @@ done
 
 CUR_DIR=$(pwd)
 
-for DIR in $(find $GIT_BASE_DIR -name ".git" | sed -e 's/\/.git//g') ; do
+for DIR in $(find $GIT_BASE_DIR -name ".git" | sed -e 's/\/.git//g' | sort) ; do
     cd $DIR
 
     PROJ=$(git remote -v | head -n1 | awk '{print $2}' | sed -e 's,.*:\(.*/\)\?,,' -e 's/\.git$//')

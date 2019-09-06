@@ -45,7 +45,7 @@ done
 
 CUR_DIR=$(pwd)
 
-for DIR in $(find $GIT_BASE_DIR -name ".git" | sed -e 's/\/.git//g') ; do
+for DIR in $(find $GIT_BASE_DIR -name ".git" | sed -e 's/\/.git//g' | sort) ; do
     cd $DIR
 
     URL=$(git remote -v | grep fetch | awk '{print $2}')
