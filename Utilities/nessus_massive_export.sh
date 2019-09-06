@@ -68,7 +68,7 @@ if [[ "$#" -ge 2 ]] ; then
     exit 1
 fi
 
-AUTH=$(curl -s -k  -X $"POST" \
+AUTH=$(curl -s -k -X $"POST" \
     -H $"Host: ${HOSTADDR}:8834" -H $"${UA}" -H $"Accept: */*" -H $"Accept-Language: en-US,en;q=0.5" -H $"Accept-Encoding: gzip, deflate" -H $"Referer: https://${HOSTADDR}:8834/" -H $"Content-Type: application/json" -H $"Content-Length: 55" -H $"Connection: close" \
     --data-binary $"{\"username\":\"${USERNAME}\",\"password\":\"${PASSWORD}\"}" \
     $"https://${HOSTADDR}:8834/session" | jsonlint -f | grep token | awk '{ print $4 }' | tr -d '"')
