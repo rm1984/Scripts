@@ -112,6 +112,8 @@ if [[ "$#" -eq 0 ]] ; then
         mv folders.gz folders
     fi
 
+    echo
+
     cat folders | jq -M -S -c '.folders[] | {name, id}' | jq -M -s 'sort_by(.name)' | grep -Ev '\[|\]|{|}' | cut -d':' -f2 | sed -z 's/,\n//g' | column
 
     rm -f folders
@@ -131,6 +133,7 @@ elif [[ "$#" -eq 1 ]] ; then
     fi
 
     mkdir -p "${REPORTSD}"
+
     echo "    Reports dir:  ${REPORTSD}"
     echo "     Sleep time:  ${SLEEPSEC} seconds"
     echo
@@ -176,6 +179,9 @@ elif [[ "$#" -eq 1 ]] ; then
             echo "OK"
         fi
     done
+
+    rm -f scans
+    rm -f *.json
 fi
 
 echo
