@@ -18,7 +18,8 @@
 #
 # --TODO--
 # - make it work with older versions
-# - do checks when there are no folders or no scans in a fodler
+# - do checks when there are no folders or no scans in a folder
+# - do checks on potential server timeouts and longer time to sleep
 #
 #
 ################################################################################
