@@ -99,6 +99,8 @@ curl -s -k -X $"GET" \
 -H $"Host: ${HOSTADDR}:${HOSTPORT}" -H $"${UA}" -H $"Accept: */*" -H $"Accept-Language: en-US,en;q=0.5" -H $"Accept-Encoding: gzip, deflate" -H $'Referer: https://10.70.80.10:${HOSTPORT}/' -H $"Content-Type: application/json" -H $"X-Cookie: token=${AUTH}" -H $"Connection: close" \
 $"https://${HOSTADDR}:${HOSTPORT}/server/properties" -o $TMPDIR/properties.gz
 
+gzip -t $TMPDIR/properties.gz 2> /dev/null
+
 if [[ $? -eq 0 ]] ; then
     gunzip -q --synchronous $TMPDIR/properties.gz
 else
@@ -119,7 +121,7 @@ if [[ "$#" -eq 0 ]] ; then
     -H $"Host: ${HOSTADDR}:${HOSTPORT}" -H $"${UA}" -H $"Accept: */*" -H $"Accept-Language: en-US,en;q=0.5" -H $"Accept-Encoding: gzip, deflate" -H $'Referer: https://10.70.80.10:${HOSTPORT}/' -H $"Content-Type: application/json" -H $"X-Cookie: token=${AUTH}" -H $"Connection: close" \
     $"https://${HOSTADDR}:${HOSTPORT}/folders" -o $TMPDIR/folders.gz
 
-    gzip -t $TMPDIR/folders.gz 2>/dev/null
+    gzip -t $TMPDIR/folders.gz 2> /dev/null
 
     if [[ $? -eq 0 ]] ; then
         gunzip -q --synchronous $TMPDIR/folders.gz
@@ -140,7 +142,7 @@ elif [[ "$#" -eq 1 ]] ; then
     -H $"Host: ${HOSTADDR}:${HOSTPORT}" -H $"${UA}" -H $"Accept: */*" -H $"Accept-Language: en-US,en;q=0.5" -H $"Accept-Encoding: gzip, deflate" -H $"Referer: https://${HOSTADDR}:${HOSTPORT}/" -H $"Content-Type: application/json" -H $"X-Cookie: token=${AUTH}" -H $"Connection: close" \
     $"https://${HOSTADDR}:${HOSTPORT}/scans?folder_id=${FOLDERID}" -o $TMPDIR/scans.gz
 
-    gzip -t $TMPDIR/scans.gz 2>/dev/null
+    gzip -t $TMPDIR/scans.gz 2> /dev/null
 
     if [[ $? -eq 0 ]] ; then
         gunzip -q --synchronous $TMPDIR/scans.gz
@@ -185,7 +187,7 @@ elif [[ "$#" -eq 1 ]] ; then
             -H $"Host: ${HOSTADDR}:${HOSTPORT}" -H $"${UA}" -H $"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" -H $"Accept-Language: en-US,en;q=0.5" -H $"Accept-Encoding: gzip, deflate" -H $"Referer: https://${HOSTADDR}:${HOSTPORT}/" -H $"Connection: close" -H $"Upgrade-Insecure-Requests: 1" \
             $"https://${HOSTADDR}:${HOSTPORT}/tokens/${TOKEN}/download" -o ${REPORTSDIR}/report_${SCANID}.gz
 
-            gzip -t ${REPORTSDIR}/report_${SCANID}.gz 2>/dev/null
+            gzip -t ${REPORTSDIR}/report_${SCANID}.gz 2> /dev/null
 
             if [[ $? -eq 0 ]] ; then
                 gunzip -q --synchronous ${REPORTSDIR}/report_${SCANID}.gz
