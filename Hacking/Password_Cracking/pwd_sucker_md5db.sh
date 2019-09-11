@@ -18,7 +18,7 @@
 # VARIABLES --------------------------------------------------------------------
 
 URL="https://www.nitrxgen.net/md5db/"
-DICT_DIR=~/dictionaries
+DICT_DIR=~/DICTIONARIES
 DICT=$DICT_DIR/CUSTOM_md5db.txt
 
 

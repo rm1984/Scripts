@@ -2,10 +2,10 @@
 #
 # Author:       Riccardo Mollo (riccardomollo84@gmail.com)
 #
-# Name:	        pwd_sucker_crackpot.sh
+# Name:	        pwd_sucker_gromweb.sh
 #
 # Description:  A script that fetches cracked passwords from the following site:
-#               http://cracker.offensive-security.com/index.php
+#               https://md5.gromweb.com/
 #
 #
 # --TODO--
@@ -17,9 +17,9 @@
 
 # VARIABLES --------------------------------------------------------------------
 
-URL="http://cracker.offensive-security.com/index.php"
+URL="https://md5.gromweb.com/"
 DICT_DIR=~/DICTIONARIES
-DICT=$DICT_DIR/CUSTOM_crackpot.txt
+DICT=$DICT_DIR/CUSTOM_gromweb.txt
 
 
 # FUNCTIONS --------------------------------------------------------------------
@@ -45,17 +45,10 @@ done
 [[ $DEBUG -ne 0 ]] && set -x
 
 OUT_HTML=$(echo /tmp/.rnd-${RANDOM}.html)
-TMP=/tmp/.crackpot.txt
-SDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
-wget -O $OUT_HTML $URL > /dev/null 2>&1
-$SDIR/htmltable2csv.py $OUT_HTML > /dev/null 2>&1
+wget $URL -O $OUT_HTML
+cat $OUT_HTML | grep -F '<a href="/?string=' | cut -d'=' -f3 | cut -d'"' -f1 >> $DICT
 
-OUT_CSV="$(echo $OUT_HTML | sed -e 's/html/csv/g')"
-
-grep '^"[0-9]' $OUT_CSV | cut -d',' -f4 | sed 's/^"\(.*\)"$/\1/' | grep -v 'NOT-FOUND' > $TMP
-
-cat $TMP >> $DICT
 sort -u $DICT -o $DICT
 
-rm -f $OUT_HTML $OUT_CSV $TMP
+rm -f $OUT_HTML $OUT_CSV

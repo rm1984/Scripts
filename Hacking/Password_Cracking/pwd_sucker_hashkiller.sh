@@ -18,7 +18,7 @@
 # VARIABLES --------------------------------------------------------------------
 
 URL="https://hashkiller.co.uk/"
-DICT_DIR=~/dictionaries
+DICT_DIR=~/DICTIONARIES
 DICT=$DICT_DIR/CUSTOM_hashkiller.txt
 
 
