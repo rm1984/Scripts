@@ -1,0 +1,26 @@
+set smooth
+set autoindent
+set casesensitive
+set historylog
+set morespace
+set nohelp
+set nowrap
+set tabsize 4
+set tabstospaces
+set mouse
+
+include "/usr/share/nano/nanorc.nanorc"
+include "/usr/share/nano/c.nanorc"
+include "/usr/share/nano/html.nanorc"
+include "/usr/share/nano/tex.nanorc"
+include "/usr/share/nano/mutt.nanorc"
+include "/usr/share/nano/patch.nanorc"
+include "/usr/share/nano/man.nanorc"
+include "/usr/share/nano/groff.nanorc"
+include "/usr/share/nano/perl.nanorc"
+include "/usr/share/nano/python.nanorc"
+include "/usr/share/nano/ruby.nanorc"
+include "/usr/share/nano/java.nanorc"
+include "/usr/share/nano/asm.nanorc"
+include "/usr/share/nano/sh.nanorc"
+include "/usr/share/nano/pov.nanorc"
