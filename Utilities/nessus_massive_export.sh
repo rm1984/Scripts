@@ -53,9 +53,9 @@ declare -a CMDS=(
 "curl"
 "gunzip"
 "gzip"
-"nc"
+"nc" # "OpenBSD rewrite of netcat" is required (pkg: netcat-openbsd)
 "jq"
-"jsonlint"
+"jsonlint" # (pkg: python3-demjson)
 );
 
 for CMD in ${CMDS[@]} ; do
@@ -65,6 +65,8 @@ done
 
 # MAIN -------------------------------------------------------------------------
 
+[[ $DEBUG -ne 0 ]] && set -x
+
 if [[ "$#" -ge 2 ]] ; then
     echo "./nessus_massive_export.sh [FOLDER_ID]"
     echo
@@ -72,7 +74,7 @@ if [[ "$#" -ge 2 ]] ; then
     exit 1
 fi
 
-cat /dev/null | nc -N ${HOSTADDR} ${HOSTPORT} &> /dev/null
+cat /dev/null | nc -w 3 -n -N ${HOSTADDR} ${HOSTPORT} &> /dev/null
 
 if [[ $? -ne 0 ]] ; then
     echo "TCP port ${HOSTPORT} at host ${HOSTADDR} seems to be closed. Quitting..."
