@@ -7,3 +7,6 @@ echo 'https://duckduckgo.com/?q=url+encode&t=h_&ia=web' | jq -sRr @uri
 # URL-decode any string very quickly
 alias urldecode='sed "s@+@ @g;s@%@\\\\x@g" | xargs -0 printf "%b"'
 echo 'https%3A%2F%2Fduckduckgo.com%2F%3Fq%3Durl%2Bencode%26t%3Dh_%26ia%3Dweb%0A' | urldecode
+
+# extract files from binary file with BinWalk
+binwalk -I -k -z -M -e -v file.bin
