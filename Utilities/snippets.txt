@@ -10,3 +10,6 @@ echo 'https%3A%2F%2Fduckduckgo.com%2F%3Fq%3Durl%2Bencode%26t%3Dh_%26ia%3Dweb%0A'
 
 # extract files from binary file with BinWalk
 binwalk -I -k -z -M -e -v file.bin
+
+# convert a TXT file to a PDF file
+vim example.txt -c "hardcopy > example.ps | q" ; ps2pdf example.ps
