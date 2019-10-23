@@ -13,3 +13,6 @@ binwalk -I -k -z -M -e -v file.bin
 
 # convert a TXT file to a PDF file
 vim example.txt -c "hardcopy > example.ps | q" ; ps2pdf example.ps
+
+# search strings with an exact numbers of characters only
+cat example.txt | grep -E '^.{32}$'
