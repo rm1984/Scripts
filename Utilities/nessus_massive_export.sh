@@ -49,6 +49,7 @@ command_exists() {
 # CHECKS -----------------------------------------------------------------------
 
 declare -a CMDS=(
+"bc"
 "column"
 "curl"
 "gunzip"
@@ -56,6 +57,7 @@ declare -a CMDS=(
 "nc" # "OpenBSD rewrite of netcat" is required (pkg: netcat-openbsd)
 "jq"
 "jsonlint" # (pkg: python3-demjson)
+"wc"
 );
 
 for CMD in ${CMDS[@]} ; do
@@ -83,8 +85,12 @@ if [[ $? -ne 0 ]] ; then
     exit 1
 fi
 
+L1=$(echo -n "${USERNAME}" | wc -m)
+L2=$(echo -n "${PASSWORD}" | wc -m)
+CL=$(echo "$L1+$L2+29" | bc)
+
 AUTH=$(curl -s -k -X $"POST" \
-    -H $"Host: ${HOSTADDR}:${HOSTPORT}" -H $"${UA}" -H $"Accept: */*" -H $"Accept-Language: en-US,en;q=0.5" -H $"Accept-Encoding: gzip, deflate" -H $"Referer: https://${HOSTADDR}:${HOSTPORT}/" -H $"Content-Type: application/json" -H $"Content-Length: 55" -H $"Connection: close" \
+    -H $"Host: ${HOSTADDR}:${HOSTPORT}" -H $"${UA}" -H $"Accept: */*" -H $"Accept-Language: en-US,en;q=0.5" -H $"Accept-Encoding: gzip, deflate" -H $"Referer: https://${HOSTADDR}:${HOSTPORT}/" -H $"Content-Type: application/json" -H $"Content-Length: $CL" -H $"Connection: close" \
     --data-binary $"{\"username\":\"${USERNAME}\",\"password\":\"${PASSWORD}\"}" \
     $"https://${HOSTADDR}:${HOSTPORT}/session" | jsonlint -f | grep token | awk '{ print $4 }' | tr -d '"')
 
