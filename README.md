@@ -10,6 +10,7 @@ A collection of personal and useful shell scripts for Unix and GNU/Linux systems
 ./Hacking/Info_Gathering/nmap_with_tor.sh
 ./Hacking/Info_Gathering/zmap_screenshot.sh
 ./Hacking/Password_Cracking/autojohn.sh
+./Hacking/Password_Cracking/dict_split_n_sort.sh
 ./Hacking/Password_Cracking/pwd_sucker_crackpot.sh
 ./Hacking/Password_Cracking/pwd_sucker_gromweb.sh
 ./Hacking/Password_Cracking/pwd_sucker_hashkiller.sh
