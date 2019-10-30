@@ -94,7 +94,7 @@ FILENAME="${TARGET}_$(echo "$NETWORK" | sed -e 's/\//_/g').txt"
 sudo zmap -p $PORT -o $FILENAME -q --disable-syslog "${NETWORK}"
 
 echo "Discovered IPs file:    $FILENAME"
-echo "Discovered hosts   :    $(cat $FILENAME | wc -l)"
+echo "Discovered hosts:    $(cat $FILENAME | wc -l)"
 
 for IP in $(cat $FILENAME) ; do
     TEST_HTTPS=$(amap -1 -q $IP $PORT | grep 'matches ssl')
