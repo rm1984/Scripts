@@ -9,6 +9,8 @@
 #               depending on its first character. For example, all passwords
 #               beginning with "a" will be saved in "a.txt", all passwords
 #               beginning with "B" will be saved in "B.txt", and so on.
+#               Password beginning with uncommon characters will be saved in a
+#               file named "_others_.txt".
 #
 # Usage:        ./dict_split_n_sort.sh <DICTIONARY.txt>
 #
@@ -38,6 +40,12 @@ export LC_ALL=C
 
 INFILE=$1
 
+if [[ ! -f "$INFILE" ]]; then
+    echo "Dictionary file \"$INFILE\" doesn't exist!"
+
+    exit 1
+fi
+
 DICT=$(readlink -f $INFILE)
 PWDS=$(wc -l $DICT | awk '{ print $1 }')
 SIZE=$(du -sh $DICT | awk '{ print $1 }')
@@ -51,10 +59,11 @@ echo "Output dir:  $SORTED_OUT_DIR"
 echo
 echo "Splitting started at:  $(date)"
 
-#DIVD=$(echo $(($PWDS/20)))
+C=0
 
-while read line ; do
-    FIRSTCHAR=${line:0:1}
+while read LINE ; do
+    C=$((C+1))
+    FIRSTCHAR=${LINE:0:1}
     OUTFILE=${FIRSTCHAR}.txt
 
     if [[ -z "${FIRSTCHAR//[a-zA-Z0-9]}" && ! -z "${FIRSTCHAR}" ]] ; then
@@ -63,11 +72,13 @@ while read line ; do
         OUTFILE=$SORTED_OUT_DIR/_others_.txt
     fi
 
-    echo -n "${line}" >> $OUTFILE
+    echo -n "${LINE}" >> $OUTFILE
     echo >> $OUTFILE
+
+    PERC=$((100*C/PWDS))
+    echo -ne "(${PERC}%)\r"
 done < $DICT
 
-echo "."
 echo "Splitting finished at: $(date)"
 echo
 echo "Sorting started at:    $(date)"

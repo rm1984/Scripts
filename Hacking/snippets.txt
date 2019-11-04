@@ -16,4 +16,4 @@ wpscan --url www.example.com --rua --disable-tls-checks -e vp,vt,cb,dbe,u --prox
 
 
 # fetch a web content using cURL via TOR
-curl -s --socks5-hostname 127.0.0.1:9050 https://www.example.com
+curl -A "Googlebot/2.1 (+http://www.google.com/bot.html)" -s --socks5-hostname 127.0.0.1:9050 https://www.example.com
