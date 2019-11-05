@@ -57,7 +57,7 @@ echo "Passwords:   $PWDS"
 echo "Size:        $SIZE"
 echo "Output dir:  $SORTED_OUT_DIR"
 echo
-echo "Splitting started at:  $(date)"
+echo "Splitting started at:   $(date)"
 
 C=0
 
@@ -79,15 +79,22 @@ while read LINE ; do
     echo -ne "(${PERC}%)\r"
 done < $DICT
 
-echo "Splitting finished at: $(date)"
+echo "Splitting finished at:  $(date)"
 echo
-echo "Sorting started at:    $(date)"
+echo "Sorting started at:     $(date)"
+
+TOT=0
 
 for CHAR_DICT in $(ls -1 $SORTED_OUT_DIR/*.txt) ; do
-    sort -i -u $CHAR_DICT -o $CHAR_DICT
+#    sort -i -u $CHAR_DICT -o $CHAR_DICT
+    sort -u $CHAR_DICT -o $CHAR_DICT
 
-    echo -n "."
+    N=$(wc -l $CHAR_DICT | awk '{ print $1 }')
+    TOT=$((TOT+N))
+
+#    echo -n "."
 done
 
-echo "."
-echo "Sorting finished at:   $(date)"
+echo "Sorting finished at:    $(date)"
+echo
+echo "Total passwords: $TOT"
