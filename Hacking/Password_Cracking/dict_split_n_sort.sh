@@ -76,6 +76,7 @@ while read LINE ; do
     echo >> $OUTFILE
 
     PERC=$((100*C/PWDS))
+
     echo -ne "(${PERC}%)\r"
 done < $DICT
 
@@ -92,7 +93,7 @@ for CHAR_DICT in $(ls -1 $SORTED_OUT_DIR/*.txt) ; do
     N=$(wc -l $CHAR_DICT | awk '{ print $1 }')
     TOT=$((TOT+N))
 
-#    echo -n "."
+    echo -ne "(${CHAR_DICT}%)\r"
 done
 
 echo "Sorting finished at:    $(date)"
