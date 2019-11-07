@@ -19,6 +19,7 @@ A collection of personal and useful shell scripts for Unix and GNU/Linux systems
 ./Hacking/Penetration_Testing/sniff_tcpdump_passwords.sh
 ./Hacking/snippets.txt
 ./Networking/get_nics_with_ip_mac_status.sh
+./Networking/list_public_open_ports.sh
 ./Networking/ping_until_alive.sh
 ./Networking/reverse_ip_lookup.sh
 ./Networking/ssh_proxy_pivot.sh
