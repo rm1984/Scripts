@@ -59,26 +59,18 @@ echo "Output dir:  $SORTED_OUT_DIR"
 echo
 echo "Splitting started at:   $(date)"
 
-C=0
+# splitting based on "A-Za-z0-9" characters
+for FIRSTCHAR in $(echo {A..Z} {a..z} {0..9}) ; do
+    echo -n "${FIRSTCHAR} "
+    OUTFILE=$SORTED_OUT_DIR/$FIRSTCHAR.txt
+    grep "^${FIRSTCHAR}" $DICT >> $OUTFILE
+done
 
-while read LINE ; do
-    C=$((C+1))
-    FIRSTCHAR=${LINE:0:1}
-    OUTFILE=${FIRSTCHAR}.txt
-
-    if [[ -z "${FIRSTCHAR//[a-zA-Z0-9]}" && ! -z "${FIRSTCHAR}" ]] ; then
-        OUTFILE=$SORTED_OUT_DIR/$FIRSTCHAR.txt
-    else
-        OUTFILE=$SORTED_OUT_DIR/_others_.txt
-    fi
-
-    echo -n "${LINE}" >> $OUTFILE
-    echo >> $OUTFILE
-
-    PERC=$((100*C/PWDS))
-
-    echo -ne "(${PERC}%)\r"
-done < $DICT
+# splitting based on all the other remaining characters
+OUTFILE=$SORTED_OUT_DIR/_others_.txt
+grep -v ^'[A-Za-z0-9]' $DICT >> $OUTFILE
+echo -n "_others_"
+echo
 
 echo "Splitting finished at:  $(date)"
 echo
@@ -87,7 +79,6 @@ echo "Sorting started at:     $(date)"
 TOT=0
 
 for CHAR_DICT in $(ls -1 $SORTED_OUT_DIR/*.txt) ; do
-#    sort -i -u $CHAR_DICT -o $CHAR_DICT
     sort -u $CHAR_DICT -o $CHAR_DICT
 
     N=$(wc -l $CHAR_DICT | awk '{ print $1 }')
