@@ -36,6 +36,7 @@ A collection of personal and useful shell scripts for Unix and GNU/Linux systems
 ./System_Administration/pip_upgrade_pkgs.sh
 ./System_Administration/prepare_kali.sh
 ./System_Administration/quick_backup.sh
+./System_Administration/snippets.txt
 ./System_Administration/Virtualization/proxmox_import_ova.sh
 ./Utilities/free_buffer_cache.sh
 ./Utilities/git_list_repos.sh

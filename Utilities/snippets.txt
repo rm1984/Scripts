@@ -27,7 +27,7 @@ while read STR ; do echo "$STR" ; done < example.txt
 cat example.txt | grep -E '^.{32}$'
 
 
-# print a text line until a specific word (that gets excluded from the output)
+# print a text line until a specific word is found (that word is excluded from the output)
 STR='Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
 echo ${STR%%"and"*}
 Lorem Ipsum is simply dummy text of the printing

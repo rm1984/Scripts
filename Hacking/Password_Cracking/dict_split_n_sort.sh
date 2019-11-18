@@ -37,6 +37,7 @@ if [[ "$#" -eq 0 ]] ; then
 fi
 
 export LC_ALL=C
+export LC_CTYPE=C
 
 INFILE=$1
 

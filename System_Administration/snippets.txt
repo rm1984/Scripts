@@ -1,0 +1,8 @@
+# execute a locally defined function on a remote host via SSH 
+function foo()
+{
+    date
+    uptime
+    hostname
+}
+typeset -f | ssh user@remotehost "$(cat); foo"
