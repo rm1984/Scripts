@@ -3,7 +3,7 @@ tor-resolve www.example.com localhost:9050
 
 
 # enumerate directories and files using DirSearch via TOR
-torify dirsearch -u https://www.example.com -e php -f --random-user-agents --suppress-empty -x 404,403
+torify dirsearch -u https://www.example.com -e php -f --random-user-agents --suppress-empty -x 404,403,301
 
 
 # dump a DB using SQLMap via TOR
@@ -17,3 +17,14 @@ wpscan --url www.example.com --rua --disable-tls-checks -e vp,vt,cb,dbe,u --prox
 
 # fetch a web content using cURL via TOR
 curl -A "Googlebot/2.1 (+http://www.google.com/bot.html)" -s --socks5-hostname 127.0.0.1:9050 https://www.example.com
+
+
+# delete BASH history and avoid saving commands (= leave no traces)
+history -c
+rm -f $HISTFILE
+unset HISTFILE
+set +o history
+export HISTSIZE=0
+export HISTFILESIZE=0
+# one-liner
+history -c ; rm -f $HISTFILE ; unset HISTFILE ; set +o history ; export HISTSIZE=0 ; export HISTFILESIZE=0

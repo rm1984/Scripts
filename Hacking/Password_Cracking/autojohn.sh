@@ -317,6 +317,7 @@ else
         fi
 
         POT_FILE=$POTS_DIR/$SESSION.pot
+        PWD_FILE=$POTS_DIR/$SESSION.csv
         PROGRESS_FILE=$POTS_DIR/$SESSION.progress
         STATUS=$(john --show --pot=$POT_FILE --format=$FORMAT $FILE | grep -F cracked)
         C=$(echo $STATUS | grep -c -F ', 0 left')
@@ -381,9 +382,9 @@ else
         echo
         echo "[END] $(date)"
         echo
-        echo "Found passwords (saved in $POT_FILE):"
+        echo "Found passwords (saved in $PWD_FILE):"
 
-        john --show --pot=$POT_FILE --format=$FORMAT $FILE | grep -F ':'
+        john --show --pot=$POT_FILE --format=$FORMAT $FILE | grep -F ':' | tee $PWD_FILE
 
         if [[ $? -ne 0 ]] ; then
             echo "None :-("
