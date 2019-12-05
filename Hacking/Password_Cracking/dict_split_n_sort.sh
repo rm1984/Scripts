@@ -26,6 +26,8 @@
 # VARIABLES --------------------------------------------------------------------
 
 SORTED_OUT_DIR=~/DICTIONARIES/SORTED
+MEMORY_USAGE="50%"
+CORES=4 # it only works with the GNU implementation of sort
 
 
 # MAIN -------------------------------------------------------------------------
@@ -80,7 +82,8 @@ echo "Sorting started at:     $(date)"
 TOT=0
 
 for CHAR_DICT in $(ls -1 $SORTED_OUT_DIR/*.txt) ; do
-    sort -u $CHAR_DICT -o $CHAR_DICT
+    #sort --parallel=$CORES -S $MEMORY_USAGE -u $CHAR_DICT -o $CHAR_DICT
+    sort -S $MEMORY_USAGE -u $CHAR_DICT -o $CHAR_DICT
 
     N=$(wc -l $CHAR_DICT | awk '{ print $1 }')
     TOT=$((TOT+N))
