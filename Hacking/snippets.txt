@@ -28,3 +28,15 @@ export HISTSIZE=0
 export HISTFILESIZE=0
 # one-liner
 history -c ; rm -f $HISTFILE ; unset HISTFILE ; set +o history ; export HISTSIZE=0 ; export HISTFILESIZE=0
+
+
+# upgrade a shell to a fully functional interactive shell
+python -c 'import pty; pty.spawn("/bin/bash")'
+-> CTRL+Z
+stty raw -echo
+fg
+reset
+
+
+# complete DNS enumeration with AMASS
+amass -v -whois -ip -active -brute -d example.com
