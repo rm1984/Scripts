@@ -21,6 +21,9 @@
 # --TODO--
 # - improve and optimize code
 # - better checks for command line parameters
+# - implement simple bruteforce:
+#     john test.txt --format=Raw-MD5 -1=?l -mask=?1?1?1?1?1?1?1 --fork=4
+#     ./autojohn.sh --bruteforce --min <MIN_LENGTH> --max 8 --mask <DLUA> <HASHES_FILE> <FORMAT> <SESSION_NAME>
 #
 #
 ################################################################################
@@ -147,7 +150,13 @@ else
             else
                 for SESSION in $(ls -1 $POTS_DIR/*.pot | sed -r 's/.*\/(.*).pot.*/\1/') ; do
                     if [[ -f "$POTS_DIR/$SESSION.progress" ]] ; then
-                        echo "[R] $SESSION"
+                        ps auxwww | grep john | grep -- "--session=$SESSION"
+
+                        if [[ $? -ne 0 ]] ; then
+                            echo "[R] $SESSION (dead?)"
+                        else
+                            echo "[R] $SESSION"
+                        fi
                     else
                         echo "[.] $SESSION"
                     fi
@@ -167,6 +176,7 @@ else
             export LC_CTYPE=C
             export LC_ALL=C
 
+            MEMORY_USAGE="50%" # maximum memory usage for sort command
             CSV=$POTS_DIR/polished_dicts.csv
 
             echo "FILENAME;START_TIME;END_TIME;OLD_SIZE;NEW_SIZE" > $CSV
@@ -186,7 +196,7 @@ else
 
                 tr -dc '[:print:]\n\r' < $DICT > $NEWDICT
                 dos2unix $NEWDICT > /dev/null 2>&1
-                sort -u $NEWDICT > $DICT 2>&1
+                sort -S $MEMORY_USAGE -u $NEWDICT > $DICT 2>&1
                 rm $NEWDICT
 
                 NEWSIZE=$(du -sh $DICT | awk '{ print $1 }')
