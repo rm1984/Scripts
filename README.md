@@ -15,8 +15,9 @@ A collection of personal and useful shell scripts for Unix and GNU/Linux systems
 ./Hacking/Password_Cracking/pwd_sucker_gromweb.sh
 ./Hacking/Password_Cracking/pwd_sucker_hashkiller.sh
 ./Hacking/Password_Cracking/pwd_sucker_md5db.sh
+./Hacking/Penetration_Testing/sniff_host_traffic.sh
+./Hacking/Penetration_Testing/sniff_passwords_tcpdump.sh
 ./Hacking/Penetration_Testing/sniff_ssh_credentials.sh
-./Hacking/Penetration_Testing/sniff_tcpdump_passwords.sh
 ./Hacking/snippets.txt
 ./Networking/get_nics_with_ip_mac_status.sh
 ./Networking/list_public_open_ports.sh

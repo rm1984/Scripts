@@ -2,12 +2,12 @@
 #
 # Author:       Riccardo Mollo (riccardomollo84@gmail.com)
 #
-# Name:	        sniff_tcpdump_passwords.sh
+# Name:	        sniff_passwords_tcpdump.sh
 #
 # Description:  A script that sniffs the traffic on your machine looking for
 #               plaintext credentials (HTTP, FTP, SMTP, IMAP, POP3, TELNET).
 #
-# Usage:        ./sniff_tcpdump_passwords.sh
+# Usage:        ./sniff_passwords_tcpdump.sh
 #
 #
 # --TODO--
