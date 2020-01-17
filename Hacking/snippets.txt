@@ -1,10 +1,15 @@
+# reverse DNS lookups via TOR (using findomain)
+torify findomain -t example.com
+
+
+
 # resolve a domain name via TOR
 tor-resolve www.example.com localhost:9050
 
 
 
 # enumerate directories and files using DirSearch via TOR
-torify dirsearch -u https://www.example.com -e php -f --random-user-agents --suppress-empty -x 404,403,301
+torify dirsearch -u https://www.example.com -e php -f --random-user-agents --suppress-empty -x 301,302,401,403,404
 
 
 
