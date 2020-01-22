@@ -29,6 +29,11 @@ curl -A "Googlebot/2.1 (+http://www.google.com/bot.html)" -s --socks5-hostname 1
 
 
 
+# get info about your IP address when using TOR (via Mullvad VPN service)
+curl -s --socks5-hostname 127.0.0.1:9050 https://am.i.mullvad.net/json | jq
+
+
+
 # delete BASH history and avoid saving commands (= leave no traces)
 history -c
 rm -f $HISTFILE
