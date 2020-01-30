@@ -4,7 +4,7 @@ torify findomain -t example.com
 
 
 # resolve a domain name via TOR
-tor-resolve www.example.com localhost:9050
+tor-resolve www.example.com 127.0.0.1:9050
 
 
 
@@ -26,6 +26,11 @@ wpscan --url www.example.com --rua --disable-tls-checks -e vp,vt,cb,dbe,u --prox
 
 # fetch a web content using cURL via TOR
 curl -A "Googlebot/2.1 (+http://www.google.com/bot.html)" -s --socks5-hostname 127.0.0.1:9050 https://www.example.com
+
+
+
+# browse a website with LINKS (CLI) via TOR
+links -only-proxies 1 -socks-proxy 127.0.0.1:9050 https://ipleak.org/
 
 
 
