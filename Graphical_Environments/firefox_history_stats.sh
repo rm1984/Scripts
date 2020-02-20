@@ -21,7 +21,7 @@
 
 # MAIN -------------------------------------------------------------------------
 
-OUT=$(mktemp -d -q -p ~)
+OUT=$(mktemp -d -q)
 
 cp $(find "${HOME}/.mozilla/firefox/" -name "places.sqlite" | head -n 1) "${OUT}/places.sqlite"
 sqlite3 "${OUT}/places.sqlite" "SELECT url FROM moz_places, moz_historyvisits WHERE moz_places.id = moz_historyvisits.place_id and visit_date > strftime('%s','now','-3 month')*1000000 ORDER by visit_date;"  > "${OUT}/urls-unsorted"

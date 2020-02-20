@@ -21,10 +21,12 @@ alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
 alias lsd="ls -ad */"
+alias du="du -A"
 
 #### Custom settings
 export HISTTIMEFORMAT='%F %T '
 export PAGER=less
+export QT_QPA_PLATFORMTHEME=gtk2
 
 #### Custom aliases
 alias dmesg="dmesg --color"
@@ -39,11 +41,13 @@ alias firefox_burpsuite="firefox -P 'BurpSuite'"
 alias firefox_tor="firefox -P 'Tor'"
 
 # Custom library paths
-export LD_LIBRARY_PATH="/opt/oracle/instantclient"
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/oracle/instantclient
 
 # Custom binary paths
-export PATH=$PATH:/opt/oracle/instantclient:/opt/mssql-tools/bin
+export GOPATH=~/go
+export CARGOPATH=~/.cargo
+export ORACLEPATH=$LD_LIBRARY_PATH:/opt/mssql-tools/bin
+export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:${ORACLEPATH}:${GOPATH}/bin:${CARGOPATH}/bin:
 
 ### Only load LiquidPrompt in interactive shells, not from a script or from scp
 echo $- | grep -q i 2>/dev/null && . /usr/share/liquidprompt/liquidprompt
-
