@@ -48,5 +48,6 @@ A collection of personal and useful shell scripts for Unix and GNU/Linux systems
 ./Utilities/send_sms.sh
 ./Utilities/share_dir_via_rdp.sh
 ./Utilities/snippets.txt
+./Utilities/xfce4-root-terminal.sh
 ./Web/extract_links.sh
 ```
