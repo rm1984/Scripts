@@ -21,7 +21,7 @@ alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
 alias lsd="ls -ad */"
-alias du="du -A"
+alias du="du --apparent-size"
 
 #### Custom settings
 export HISTTIMEFORMAT='%F %T '

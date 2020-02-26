@@ -3,6 +3,7 @@ alias ls='ls --color'
 alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
+alias du='du -A'
 alias free='freecolor -t -m -o'
 alias watch='gnu-watch'
  

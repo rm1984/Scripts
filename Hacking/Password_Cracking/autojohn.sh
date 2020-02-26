@@ -125,6 +125,14 @@ if [[ "$#" -eq 0 || ! "$#" -le 4 ]] ; then
 else
     PARAM=$1
 
+    if [[ $OS == "Linux" ]] ; then
+        DU_A_PARAM='--apparent-size'
+    elif [[ $OS == "FreeBSD" ]] ; then
+        DU_A_PARAM='-A'
+    else
+        DU_A_PARAM=''
+    fi
+
     if [[ "$#" -eq 1 ]] ; then
         logo
 
@@ -134,7 +142,7 @@ else
             exit 0
         elif [[ "$PARAM" == "--info" ]] ; then
             DICT_NUM=$(ls -1 $DICT_DIR/*txt | wc -l | awk '{ print $1 }')
-            DICT_SIZ=$(du -ch $DICT_DIR/*txt | tail -1 | awk '{ print $1 }')
+            DICT_SIZ=$(du -ch $DU_A_PARAM $DICT_DIR/*txt | tail -1 | awk '{ print $1 }')
 
             echo "[+] Dictionaries directory:  $DICT_DIR"
             echo "[+] Number of dictionaries:  $DICT_NUM"
@@ -187,7 +195,7 @@ else
                 echo "[>] $BNDICT"
 
                 STIME=$(date)
-                OLDSIZE=$(du -sh $DICT | awk '{ print $1 }')
+                OLDSIZE=$(du -sh $DU_A_PARAM $DICT | awk '{ print $1 }')
 
                 echo "    Started at:    $STIME"
                 echo "    Current size:  $OLDSIZE"
@@ -195,11 +203,14 @@ else
                 NEWDICT="${DICT}.NEW"
 
                 tr -dc '[:print:]\n\r' < $DICT > $NEWDICT
+                sleep 1
                 dos2unix $NEWDICT > /dev/null 2>&1
+                sleep 1
                 sort -S $MEMORY_USAGE -u $NEWDICT > $DICT 2>&1
+                sleep 1
                 rm $NEWDICT
 
-                NEWSIZE=$(du -sh $DICT | awk '{ print $1 }')
+                NEWSIZE=$(du -sh $DU_A_PARAM $DICT | awk '{ print $1 }')
                 ETIME=$(date)
 
                 echo "    New size:      $NEWSIZE"
@@ -383,7 +394,10 @@ else
 
             if [[ $C -eq 1 ]] ; then
                 echo
-                echo "Congratulations! All passwords found!"
+                echo "************************"
+                echo "*   Congratulations!   *"
+                echo "* All passwords found! *"
+                echo "************************"
 
                 break
             fi
@@ -393,6 +407,7 @@ else
         echo "[END] $(date)"
         echo
         echo "Found passwords (saved in $PWD_FILE):"
+        echo "---------------"
 
         john --show --pot=$POT_FILE --format=$FORMAT $FILE | grep -F ':' | tee $PWD_FILE
 

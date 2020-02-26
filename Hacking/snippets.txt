@@ -13,7 +13,7 @@ torify dirsearch -u https://www.example.com -e php -f --random-user-agents --sup
 
 
 
-# enumerate directories and files using LulzBuster (https://dl.packetstormsecurity.net/UNIX/scanners/lulzbuster-1.1.0.tar.xz) via TOR
+# enumerate directories and files using LulzBuster (https://packetstormsecurity.com/files/download/156406/lulzbuster-1.2.0.tar.xz) via TOR
 lulzbuster -s https://www.example.com/ -x 301,302,400,401,402,403,404,500 -U -w lists/small.txt -i -p socks5://localhost:9050
 
 
@@ -26,6 +26,11 @@ sqlmap --check-tor --tor --random-agent -u 'https://www.example.com/test.php?id=
 
 # scan a WordPress site using WPScan via TOR
 wpscan --url www.example.com --rua --disable-tls-checks -e vp,vt,cb,dbe,u --proxy socks5://127.0.0.1:9050
+
+
+
+# use Nikto via TOR
+proxychains nikto -host https://example.com/ -useragent "Googlebot (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
 
 
 
