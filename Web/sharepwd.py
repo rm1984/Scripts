@@ -45,7 +45,13 @@ class HTTPHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(data.encode())
         elif (self.path[1:] == self.pwd_hash + '?ivereadthepwd=OK%2C+I%27ve+read+the+password'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            self.wfile.write('Goodbye!'.encode())
+
             print('Customer read the password.')
+
             exit(0)
 
         return
