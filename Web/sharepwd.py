@@ -21,6 +21,7 @@ import html
 import http.server
 import random
 import requests
+import secrets
 import socketserver
 import sys
 
@@ -124,19 +125,11 @@ def get_hash(password, salt):
 
 def main(argv):
     now = int(datetime.utcnow().timestamp())
-
-    # first seed based on current UNIX timestamp
-    seed(now)
-
-    # random port
-    port = randint(16383, 65535)
-
-    # second seed based on UNIX timestamp and random port
-    seed(int(now / port))
-
+    secret = secrets.SystemRandom()
+    port = secret.randint(16383, 65535)
     customer = argv[0]
     password = argv[1]
-    salt = str(randint(port, port * now))
+    salt = str(secret.randint(port, port * now))
     pwd_hash = get_hash(password, salt)
 
     try:
