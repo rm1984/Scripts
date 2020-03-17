@@ -7,15 +7,13 @@
 # minimal web server that serves a unique URL consisting in a page with the
 # given password.
 # This may be useful when somebody needs to share a password with someone else.
-# As soon as the recipient reads the password, you can kill the server.
+# As soon as the recipient reads the password, you can kill the process (or the
+# process kills itself if the user clicks on "OK, I've read the password").
 # This is not intended to be a SECURE way to share passwords, it just aims to be
 # fast and straightforward.
 #
 # Coded by: Riccardo Mollo (riccardomollo84@gmail.com)
 #
-
-# TODO:
-# allow the customer to kill the demon once he has read the password (button?)
 
 import binascii
 import hashlib
@@ -39,14 +37,16 @@ class HTTPHandler(BaseHTTPRequestHandler):
         super().__init__(*args)
 
     def do_GET(self):
-        if (self.pwd_hash == self.path[1:]):
+        if (self.path[1:] == self.pwd_hash):
+            data = get_data(self.password)
+
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
-
-            data = get_data(self.password)
-
             self.wfile.write(data.encode())
+        elif (self.path[1:] == self.pwd_hash + '?ivereadthepwd=OK%2C+I%27ve+read+the+password'):
+            print('Customer read the password.')
+            exit(0)
 
         return
 
@@ -57,17 +57,28 @@ def get_data(password):
     <head>
         <meta charset="utf-8"/>
         <style>
+    body {
+        text-align: center;
+    }
     div {
-        padding-top: 30px;
+        padding-top: 60px;
         text-align: center;
         font-family: Courier, Monaco, monospace;
         font-weight: bold;
         font-size: 4em;
     }
+    form {
+        padding-top: 60px;
+        text-align: center;
+        display: inline-block;
+    }
         </style>
     </head>
     <body>
         <div>""" + html.escape(password) + """</div>
+        <form action="" method="get">
+            <input type="submit" value="OK, I've read the password" name="ivereadthepwd"/>
+        </form>
     </body>
     </html>
     """
