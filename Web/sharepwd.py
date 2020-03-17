@@ -2,7 +2,7 @@
 
 #
 # SharePwd.py
-# --------
+# -----------
 # A simple Python script that, given a customer name and password, runs a
 # minimal web server that serves a unique URL consisting in a page with the
 # given password.
@@ -72,12 +72,34 @@ def get_data(password):
         text-align: center;
         display: inline-block;
     }
+    .ivereadthepwd {
+	    box-shadow: inset 0px 1px 0px 0px #9acc85;
+	    background: linear-gradient(to bottom, #74ad5a 5%, #68a54b 100%);
+	    background-color: #74ad5a;
+	    border: 1px solid #3b6e22;
+	    display: inline-block;
+	    cursor: pointer;
+	    color: #ffffff;
+	    font-family: Arial;
+	    font-size: 13px;
+	    font-weight: bold;
+	    padding: 6px 12px;
+	    text-decoration: none;
+    }
+    .ivereadthepwd: hover {
+	    background: linear-gradient(to bottom, #68a54b 5%, #74ad5a 100%);
+	    background-color: #68a54b;
+    }
+    .ivereadthepwd: active {
+	    position: relative;
+	    top: 1px;
+    }
         </style>
     </head>
     <body>
         <div>""" + html.escape(password) + """</div>
         <form action="" method="get">
-            <input type="submit" value="OK, I've read the password" name="ivereadthepwd"/>
+            <input class="ivereadthepwd" type="submit" value="OK, I've read the password" name="ivereadthepwd"/>
         </form>
     </body>
     </html>
