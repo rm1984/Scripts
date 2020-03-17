@@ -11,6 +11,7 @@ A collection of personal and useful shell scripts for Unix and GNU/Linux systems
 ./Hacking/Info_Gathering/zmap_screenshot.sh
 ./Hacking/Password_Cracking/autojohn.sh
 ./Hacking/Password_Cracking/dict_split_n_sort.sh
+./Hacking/Password_Cracking/htmltable2csv.py
 ./Hacking/Password_Cracking/pwd_sucker_crackpot.sh
 ./Hacking/Password_Cracking/pwd_sucker_gromweb.sh
 ./Hacking/Password_Cracking/pwd_sucker_hashkiller.sh
@@ -51,4 +52,5 @@ A collection of personal and useful shell scripts for Unix and GNU/Linux systems
 ./Utilities/snippets.txt
 ./Utilities/xfce4-root-terminal.sh
 ./Web/extract_links.sh
+./Web/sharepwd.py
 ```
