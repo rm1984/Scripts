@@ -9,7 +9,12 @@ tor-resolve www.example.com 127.0.0.1:9050
 
 
 # enumerate directories and files using DirSearch via TOR
-torify dirsearch -u https://www.example.com -e php -f --random-user-agents --suppress-empty -x 301,302,401,403,404
+torify dirsearch -u https://www.example.com/ -e php -f --random-user-agents --suppress-empty -x 301,302,401,403,404
+
+
+
+# enumerate directories and files using Dirble via TOR
+torify dirble https://www.example.com/ -w /tmp/wordlist.txt -x .php,.html
 
 
 
