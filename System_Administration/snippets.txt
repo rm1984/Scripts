@@ -6,3 +6,8 @@ function foo()
     hostname
 }
 typeset -f | ssh user@remotehost "$(cat); foo"
+
+
+
+# find the longest line in a text file
+egrep -n "^.{$(wc -L < file.txt)}$" file.txt | sed 's/:/ -> /'
