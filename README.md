@@ -25,6 +25,7 @@ A collection of personal and useful shell scripts for Unix and GNU/Linux systems
 ./Networking/list_public_open_ports.sh
 ./Networking/ping_until_alive.sh
 ./Networking/reverse_ip_lookup.sh
+./Networking/snippets.txt
 ./Networking/ssh_proxy_pivot.sh
 ./Networking/ssh_socks5_proxy_remote_host.sh
 ./Networking/tor_check.sh
