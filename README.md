@@ -54,5 +54,6 @@ A collection of personal and useful shell scripts for Unix and GNU/Linux systems
 ./Utilities/snippets.txt
 ./Utilities/xfce4-root-terminal.sh
 ./Web/extract_links.sh
-./Web/sharepwd.py
+./Web/share_file.sh
+./Web/SharePwd.py
 ```
