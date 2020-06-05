@@ -1,2 +1,12 @@
 # sort a list of IPs in real numerical order
 cat ips.txt | sort -n -u -t . -k 1,1 -k 2,2 -k 3,3 -k 4,4
+
+
+
+# Simple web server with Python3
+python3 -m http.server 8080 --bind 127.0.0.1
+
+
+
+# Simple SMTP server with Python3
+python3 -m smtpd -c DebuggingServer -n localhost:8025
