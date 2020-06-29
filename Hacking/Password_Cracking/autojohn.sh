@@ -2,7 +2,7 @@
 #
 # Author:       Riccardo Mollo (riccardomollo84@gmail.com)
 #
-# Name:	        autojohn.sh
+# Name:         autojohn.sh
 #
 # Description:  A script that is meant to simplify and automate the usage of the
 #               powerful JohnTheRipper password cracking tool.
@@ -13,7 +13,7 @@
 #               ./autojohn.sh <HASHES_FILE>
 #               ./autojohn.sh <HASHES_FILE> <FORMAT> <SESSION_NAME> [<RULE>]
 #               ./autojohn.sh --sessions
-#               ./autojohn.sh --status <SESSION_NAME>
+#               ./autojohn.sh --show <SESSION_NAME>
 #               ./autojohn.sh --rules
 #               ./autojohn.sh --polish
 #
@@ -32,7 +32,7 @@
 # VARIABLES --------------------------------------------------------------------
 
 DICT_DIR=~/DICTIONARIES     # each wordlist in this directory *MUST* be a ".txt" file
-POTS_DIR=~/.john            # here you will find the cracked passwords for each session
+POTS_DIR=~/.autojohn            # here you will find the cracked passwords for each session
 
 
 # FUNCTIONS --------------------------------------------------------------------
@@ -52,7 +52,7 @@ usage() {
     echo "Usage:"
     echo
     echo "  - Show this help:"
-    echo "    ./autojohn.sh --help|-h"
+    echo "    ./autojohn.sh [--help|-h]"
     echo
     echo "  - Show information about dictionaries:"
     echo "    ./autojohn.sh --info"
@@ -64,11 +64,11 @@ usage() {
     echo "    ./autojohn.sh <HASHES_FILE> <FORMAT> <SESSION_NAME> [<RULE>]"
     echo "    (warning: with rules like \"EXTRA\" or \"ALL\" it may take *ages*)"
     echo
-    echo "  - Show sessions (both finished and running):"
+    echo "  - Show sessions (both [F]inished and [R]unning):"
     echo "    ./autojohn.sh --sessions"
     echo
-    echo "  - Show currently found passwords in a running session:"
-    echo "    ./autojohn.sh --status <SESSION_NAME>"
+    echo "  - Show currently found passwords in a session:"
+    echo "    ./autojohn.sh --show <SESSION_NAME>"
     echo
     echo "  - List available (optional) rules:"
     echo "    ./autojohn.sh --rules"
@@ -85,9 +85,11 @@ usage() {
 # CHECKS -----------------------------------------------------------------------
 
 declare -a CMDS=(
+"awk"
 "basename"
 "dos2unix"
 "john"
+"shasum"
 "tr"
 );
 
@@ -110,9 +112,9 @@ else
 fi
 
 if [[ ! -d "$POTS_DIR" ]] ; then
-    echo "Error! Pots directory not found: $POTS_DIR"
-
-    exit 1
+    #echo "Error! Pots directory not found: $POTS_DIR"
+    #exit 1
+    mkdir -p "$POTS_DIR"
 fi
 
 
@@ -144,9 +146,9 @@ else
             DICT_NUM=$(ls -1 $DICT_DIR/*txt | wc -l | awk '{ print $1 }')
             DICT_SIZ=$(du -ch $DU_A_PARAM $DICT_DIR/*txt | tail -1 | awk '{ print $1 }')
 
-            echo "[+] Dictionaries directory:  $DICT_DIR"
-            echo "[+] Number of dictionaries:  $DICT_NUM"
-            echo "[+] Total dictionaries size: $DICT_SIZ"
+            echo "[+] Dictionaries directory:   $DICT_DIR"
+            echo "[+] Number of dictionaries:   $DICT_NUM"
+            echo "[+] Total dictionaries size:  $DICT_SIZ"
             echo
 
             exit 0
@@ -166,7 +168,7 @@ else
                             echo "[R] $SESSION"
                         fi
                     else
-                        echo "[.] $SESSION"
+                        echo "[F] $SESSION"
                     fi
                 done
             fi
@@ -271,7 +273,7 @@ else
     elif [[ "$#" -eq 2 ]] ; then
         logo
 
-        if [[ "$1" == "--status" ]] ; then
+        if [[ "$1" == "--show" ]] ; then
             SESSION=$2
 
             if [[ $SESSION == --* ]] ; then
@@ -281,17 +283,17 @@ else
                 exit 1
             fi
 
-            PROGRESS_FILE=$POTS_DIR/$SESSION.progress
+            CSV_FILE=$POTS_DIR/$SESSION.csv
 
-            if [[ -f "$PROGRESS_FILE" ]] ; then
+            if [[ -f "$CSV_FILE" ]] && [[ -s "$CSV_FILE" ]] ; then
                 echo "Found passwords in session \"$SESSION\"":
-                echo
+                echo "---------------"
 
-                cat $PROGRESS_FILE | grep '(' | grep -v DONE | grep -v Loaded | grep -v Node
+                cat $CSV_FILE
 
                 echo
             else
-                echo "No cracking is currently running for session \"$SESSION\"."
+                echo "No passwords found (at the moment!) for session \"$SESSION\"."
                 echo
             fi
         fi
@@ -361,20 +363,25 @@ else
         fi
 
         N=$(cat $FILE | wc -l | tr -d ' ')
+        SHA=$(shasum $FILE | awk '{ print $1 }')
+        BFILE=$(basename $FILE)
 
-        echo "[+] Session name: $SESSION"
-        echo "[+] Total hashes: $N"
-        echo "[+] Hash format:  $FORMAT"
+        cp $FILE $POTS_DIR/"${SESSION}_${BFILE}_${SHA}"
+
+        echo "[+] Hashes file:   $(readlink -f $FILE)"
+        echo "[+] Session name:  $SESSION"
+        echo "[+] Total hashes:  $N"
+        echo "[+] Hash format:   $FORMAT"
 
         if [[ -z "$RULE" ]] ; then
-            echo "[+] Rule:         *DEFAULT*"
+            echo "[+] Rule:          *DEFAULT*"
         else
-            echo "[+] Rule:         $RULE"
+            echo "[+] Rule:          $RULE"
         fi
 
-        echo "[+] # of cores:   $CORES"
+        echo "[+] # of cores:    $CORES"
         echo
-        echo "[START] $(date)"
+        echo "===> Started at:  $(date) <==="
         echo
 
         for DICT in $(ls -1Sr $DICT_DIR/*.txt) ; do
@@ -404,7 +411,7 @@ else
         done
 
         echo
-        echo "[END] $(date)"
+        echo "===> Finished at: $(date) <==="
         echo
         echo "Found passwords (saved in $PWD_FILE):"
         echo "---------------"
@@ -415,7 +422,7 @@ else
             echo "None :-("
         fi
 
-        if [[ -f "$PROGRESS_FILE" ]] ; then
+        if [[ -f $PROGRESS_FILE ]] ; then
             rm -f $PROGRESS_FILE
         fi
 
