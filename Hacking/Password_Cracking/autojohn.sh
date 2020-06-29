@@ -160,7 +160,7 @@ else
             else
                 for SESSION in $(ls -1 $POTS_DIR/*.pot | sed -r 's/.*\/(.*).pot.*/\1/') ; do
                     if [[ -f "$POTS_DIR/$SESSION.progress" ]] ; then
-                        ps auxwww | grep john | grep -- "--session=$SESSION"
+                        ps auxwww | grep john | grep -- "--session=$SESSION" > /dev/null > /dev/null
 
                         if [[ $? -ne 0 ]] ; then
                             echo "[R] $SESSION (dead?)"
