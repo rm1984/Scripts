@@ -1,5 +1,5 @@
 # Scripts
-A collection of personal and useful shell scripts for Unix and GNU/Linux systems.
+A collection of personal useful scripts (in Bash and Python) for Unix and GNU/Linux systems.
 ```
 ./Databases/mysql_trace_changes_example.sql
 ./Graphical_Environments/firefox_history_stats.sh
