@@ -54,6 +54,12 @@ done
 # MAIN -------------------------------------------------------------------------
 
 
+if [[ $# -ne 1 ]] ; then
+    echo "Usage: ./share_file.sh <FILE>"
+
+    exit 1
+fi
+
 FILE=$1
 
 if [[ ! -f ${FILE} ]] ; then

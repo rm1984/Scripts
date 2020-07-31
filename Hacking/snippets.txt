@@ -23,6 +23,11 @@ lulzbuster -s https://www.example.com/ -x 301,302,400,401,402,403,404,500 -U -w 
 
 
 
+# scrape site with Photon OSINT scanner via TOR
+torify photon -u https://www.example.com/ -o /tmp/XX -v --keys --dns
+
+
+
 # dump a DB using SQLMap via TOR
 sqlmap --check-tor --tor --random-agent -u 'https://www.example.com/test.php?id=1'
 sqlmap --check-tor --tor --random-agent -u 'https://www.example.com/test.php?id=1' --tamper="between,bluecoat,charencode,charunicodeencode,concat2concatws,equaltolike,greatest,halfversionedmorekeywords,ifnull2ifisnull,modsecurityversioned,modsecurityzeroversioned,multiplespaces,percentage,randomcase,space2comment,space2hash,space2morehash,space2mysqldash,space2plus,space2randomblank,unionalltounion,unmagicquotes,versionedkeywords,versionedmorekeywords,xforwardedfor"
