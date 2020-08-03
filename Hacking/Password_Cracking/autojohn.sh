@@ -283,9 +283,18 @@ else
                 exit 1
             fi
 
+            PRG_FILE=$POTS_DIR/$SESSION.progress
             CSV_FILE=$POTS_DIR/$SESSION.csv
 
-            if [[ -f "$CSV_FILE" ]] && [[ -s "$CSV_FILE" ]] ; then
+            if [[ -f "$PRG_FILE" ]] && [[ -s "$PRG_FILE" ]] ; then
+                echo "Found passwords in session \"$SESSION\"":
+                echo "---------------"
+
+                # not so elegant but it works... need something better btw!
+                cat $PRG_FILE | grep -e '(.*)' | grep -v 'DONE (' | grep -v '^Loaded' | grep -v '^Node numbers'
+
+                echo
+            elif [[ -f "$CSV_FILE" ]] && [[ -s "$CSV_FILE" ]] ; then
                 echo "Found passwords in session \"$SESSION\"":
                 echo "---------------"
 
