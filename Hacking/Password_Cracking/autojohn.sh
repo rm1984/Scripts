@@ -224,14 +224,14 @@ show() {
         echo "---------------"
 
         # not so elegant but it works... need something better btw!
-        cat $PRG_FILE | grep -e '(.*)' | grep -v 'DONE (' | grep -v '^Loaded' | grep -v '^Node numbers'
+        cat $PRG_FILE | grep -e '(.*)' | grep -v 'DONE (' | grep -v '^Loaded' | grep -v '^Node numbers' | sort -u
 
         echo
     elif [[ -f "$CSV_FILE" ]] && [[ -s "$CSV_FILE" ]] ; then
         echo "Found passwords in session \"$SESSION\"":
         echo "---------------"
 
-        cat $CSV_FILE
+        cat $CSV_FILE | sort -u
 
         echo
     else
@@ -385,7 +385,7 @@ crack() {
         echo "Found passwords (saved in $PWD_FILE):"
         echo "---------------"
 
-        john --show --pot=$POT_FILE --format=$FORMAT $FILE | grep -F ':' | tee $PWD_FILE
+        john --show --pot=$POT_FILE --format=$FORMAT $FILE | grep -F ':' | sort -u | tee $PWD_FILE
 
         if [[ $? -ne 0 ]] ; then
             echo "None :-("
