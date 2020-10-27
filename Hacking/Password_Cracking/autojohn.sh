@@ -31,7 +31,7 @@
 
 # VARIABLES --------------------------------------------------------------------
 
-DICT_DIR=~/DICTIONARIES     # each dictionary/wordlist in this directory *MUST* be a ".txt" file
+DICT_DIR=~/DICTIONARIES     # each dictionary/wordlist in this directory *MUST* be a plain text ".txt" file
 POTS_DIR=~/.autojohn        # here you will find the cracked passwords from each session
 
 
@@ -103,8 +103,8 @@ usage() {
 }
 
 info() {
-    DICT_NUM=$(ls -1 $DICT_DIR/*txt | wc -l | awk '{ print $1 }')
-    DICT_SIZ=$(du -ch $DU_A_PARAM $DICT_DIR/*txt | tail -1 | awk '{ print $1 }')
+    DICT_NUM=$(find $DICT_DIR/*txt | wc -l | awk '{ print $1 }')
+    DICT_SIZ=$(du -ch "$DU_A_PARAM" $DICT_DIR/*txt | tail -1 | awk '{ print $1 }')
 
     echo "[+] Dictionaries directory:   $DICT_DIR"
     echo "[+] Number of dictionaries:   $DICT_NUM"
@@ -116,12 +116,12 @@ info() {
 }
 
 sessions() {
-    N=$(ls -1 $POTS_DIR/*.pot 2> /dev/null | wc -l | awk '{ print $1 }')
+    N=$(find $POTS_DIR/*.pot 2> /dev/null | wc -l | awk '{ print $1 }')
 
     if [[ "$N" -eq 0 ]] ; then
         echo "No sessions found (pots directory seems empty)."
     else
-        for SESSION in $(ls -1 $POTS_DIR/*.pot | sed -r 's/.*\/(.*).pot.*/\1/') ; do
+        for SESSION in $(find $POTS_DIR/*.pot | sed -r 's/.*\/(.*).pot.*/\1/') ; do
             if [[ -f "$POTS_DIR/$SESSION.progress" ]] ; then
                 ps auxwww | grep john | grep -- "--session=$SESSION" > /dev/null
 
@@ -161,27 +161,27 @@ polish() {
     fi
 
     for DICT in $(ls -1Sr $DICT_DIR/*.txt) ; do
-        BNDICT=$(basename $DICT)
+        BNDICT=$(basename "$DICT")
 
         echo "[>] $BNDICT"
 
         STIME=$(date)
-        OLDSIZE=$(du -h $DU_A_PARAM $DICT | awk '{ print $1 }')
+        OLDSIZE=$(du -h "$DU_A_PARAM" "$DICT" | awk '{ print $1 }')
 
         echo "    Started at:    $STIME"
         echo "    Current size:  $OLDSIZE"
 
         NEWDICT="${DICT}.NEW"
 
-        tr -dc '[:print:]\n\r' < $DICT > $NEWDICT
+        tr -dc '[:print:]\n\r' < "$DICT" > "$NEWDICT"
         sleep 1
-        dos2unix $NEWDICT > /dev/null 2>&1
+        dos2unix "$NEWDICT" > /dev/null 2>&1
         sleep 1
-        sort -S $MEMORY_USAGE -u $NEWDICT > $DICT 2>&1
+        sort -S "$MEMORY_USAGE" -u "$NEWDICT" > "$DICT" 2>&1
         sleep 1
-        rm $NEWDICT
+        rm "$NEWDICT"
 
-        NEWSIZE=$(du -h $DU_A_PARAM $DICT | awk '{ print $1 }')
+        NEWSIZE=$(du -h "$DU_A_PARAM" "$DICT" | awk '{ print $1 }')
         ETIME=$(date)
 
         echo "    New size:      $NEWSIZE"
@@ -224,14 +224,14 @@ show() {
         echo "---------------"
 
         # not so elegant but it works... need something better btw!
-        cat $PRG_FILE | grep -e '(.*)' | grep -v 'DONE (' | grep -v '^Loaded' | grep -v '^Node numbers' | sort -u
+        grep -e '(.*)' "$PRG_FILE" | grep -v 'DONE (' | grep -v '^Loaded' | grep -v '^Node numbers' | sort -u
 
         echo
     elif [[ -f "$CSV_FILE" ]] && [[ -s "$CSV_FILE" ]] ; then
         echo "Found passwords in session \"$SESSION\"":
         echo "---------------"
 
-        cat $CSV_FILE | sort -u
+        sort -u "$CSV_FILE"
 
         echo
     else
@@ -242,7 +242,7 @@ show() {
 
 crack() {
     PARAMS_COUNT=$(echo "$PARAMS" | wc -w)
-    PARAMS_ARRAY=($PARAMS)
+    PARAMS_ARRAY=("$PARAMS")
 
     if [[ "$PARAMS_COUNT" -eq 1 ]] ; then
         FILE="${PARAMS_ARRAY[0]}"
@@ -256,8 +256,8 @@ crack() {
 
         readarray -t FORMATS < <(
         {
-            john --list=unknown $FILE 2>&1 | awk -F\" '{ print $2 }' | sed -e 's/--format=//g' | sort -u | sed '/^$/d'
-            john --list=unknown $FILE 2>&1 | grep -F 'Loaded' | cut -d'(' -f2 | cut -d' ' -f1 | tr -d ','
+            john --list=unknown "$FILE" 2>&1 | awk -F\" '{ print $2 }' | sed -e 's/--format=//g' | sort -u | sed '/^$/d'
+            john --list=unknown "$FILE" 2>&1 | grep -F 'Loaded' | cut -d'(' -f2 | cut -d' ' -f1 | tr -d ','
         })
 
         if [[ ${#FORMATS[@]} -eq 0 ]] ; then
@@ -289,7 +289,7 @@ crack() {
         if [[ "$PARAMS_COUNT" -eq 4 ]] ; then
             RULE="${PARAMS_ARRAY[3]}"
 
-            if [[ $(john --list=rules | grep -c -i -w $RULE) -eq 0 ]] ; then
+            if [[ $(john --list=rules | grep -c -i -w "$RULE") -eq 0 ]] ; then
                 echo "Error! Rule does not exist: $RULE"
                 echo
 
@@ -321,8 +321,8 @@ crack() {
         POT_FILE=$POTS_DIR/$SESSION.pot
         PWD_FILE=$POTS_DIR/$SESSION.csv
         PROGRESS_FILE=$POTS_DIR/$SESSION.progress
-        STATUS=$(john --show --pot=$POT_FILE --format=$FORMAT $FILE | grep -F cracked)
-        C=$(echo $STATUS | grep -c -F ', 0 left')
+        STATUS=$(john --show --pot="$POT_FILE" --format="$FORMAT" "$FILE" | grep -F cracked)
+        C=$(echo "$STATUS" | grep -c -F ', 0 left')
 
         if [[ $C -eq 1 ]] ; then
             echo "All passwords already found! Exiting..."
@@ -331,11 +331,11 @@ crack() {
             exit 0
         fi
 
-        N=$(cat $FILE | wc -l | tr -d ' ')
-        SHA=$(shasum $FILE | awk '{ print $1 }')
-        BFILE=$(basename $FILE)
+        N=$(wc -l "$FILE" | awk '{ print $1 }')
+        SHA=$(shasum "$FILE" | awk '{ print $1 }')
+        BFILE=$(basename "$FILE")
 
-        cp $FILE $POTS_DIR/"${SESSION}_${BFILE}_${SHA}"
+        cp "$FILE" $POTS_DIR/"${SESSION}_${BFILE}_${SHA}"
 
         echo "[+] Hashes file:   $(readlink -f $FILE)"
         echo "[+] Session name:  $SESSION"
@@ -354,19 +354,19 @@ crack() {
         echo
 
         for DICT in $(ls -1Sr $DICT_DIR/*.txt) ; do
-            BNDICT=$(basename $DICT)
+            BNDICT=$(basename "$DICT")
 
             echo "[>] $BNDICT"
 
             if [[ -z "$RULE" ]] ; then
-                john --wordlist=$DICT --format=$FORMAT --nolog --fork=$CORES --session=$SESSION --pot=$POT_FILE $FILE >> $PROGRESS_FILE 2>&1
+                john --wordlist="$DICT" --format="$FORMAT" --nolog --fork="$CORES" --session="$SESSION" --pot="$POT_FILE" "$FILE" >> "$PROGRESS_FILE" 2>&1
             else
-                john --wordlist=$DICT --format=$FORMAT --rules=$RULE --nolog --fork=$CORES --session=$SESSION --pot=$POT_FILE $FILE >> $PROGRESS_FILE 2>&1
+                john --wordlist="$DICT" --format="$FORMAT" --nolog --fork="$CORES" --session="$SESSION" --pot="$POT_FILE" --rules="$RULE" "$FILE" >> "$PROGRESS_FILE" 2>&1
             fi
 
-            STATUS=$(john --show --pot=$POT_FILE --format=$FORMAT $FILE | grep -F cracked)
-            echo $STATUS
-            C=$(echo $STATUS | grep -c -F ', 0 left')
+            STATUS=$(john --show --pot="$POT_FILE" --format="$FORMAT" "$FILE" | grep -F cracked)
+            echo "$STATUS"
+            C=$(echo "$STATUS" | grep -c -F ', 0 left')
 
             if [[ $C -eq 1 ]] ; then
                 echo
@@ -385,14 +385,14 @@ crack() {
         echo "Found passwords (saved in $PWD_FILE):"
         echo "---------------"
 
-        john --show --pot=$POT_FILE --format=$FORMAT $FILE | grep -F ':' | sort -u | tee $PWD_FILE
+        john --show --pot="$POT_FILE" --format="$FORMAT" "$FILE" | grep -F ':' | sort -u | tee "$PWD_FILE"
 
         if [[ $? -ne 0 ]] ; then
             echo "None :-("
         fi
 
-        if [[ -f $PROGRESS_FILE ]] ; then
-            rm -f $PROGRESS_FILE
+        if [[ -f "$PROGRESS_FILE" ]] ; then
+            rm -f "$PROGRESS_FILE"
         fi
 
         echo
@@ -414,7 +414,7 @@ declare -a CMDS=(
 );
 
 for CMD in ${CMDS[@]} ; do
-    command_exists $CMD
+    command_exists "$CMD"
 done
 
 if [[ ! -d "$DICT_DIR" ]] ; then
@@ -422,7 +422,7 @@ if [[ ! -d "$DICT_DIR" ]] ; then
 
     exit 1
 else
-    DICT_NUM=$(ls -1q $DICT_DIR/*.txt 2> /dev/null | wc -l)
+    DICT_NUM=$(find $DICT_DIR/*.txt 2> /dev/null | wc -l)
 
     if [[ "$DICT_NUM" -eq 0 ]] ; then
         echo "Error! No *.txt dictionaries found."
@@ -479,8 +479,8 @@ while (( "$#" )) ; do
         shift
         ;;
     --show)
-        if [ -n "$2" ] && [ ${2:0:1} != "-" ] ; then
-            show $2
+        if [ -n "$2" ] && [ "${2:0:1}" != "-" ] ; then
+            show "$2"
             shift 2
         else
             echo "Error! Argument for $1 is missing." >&2
@@ -504,4 +504,4 @@ done
 
 eval set -- "$PARAMS"
 
-crack $PARAMS
+crack "$PARAMS"
