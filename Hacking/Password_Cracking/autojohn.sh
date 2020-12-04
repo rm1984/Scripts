@@ -96,7 +96,8 @@ usage() {
     echo "    a very long time and require a lot of temporary disk space)"
     echo
     echo "    ./autojohn.sh --clean"
-    echo "    delete all files in pots directory (except CSV with stats)"
+    echo "    delete all files in pots directory (except CSV with passwords and"
+    echo "    stats) and the *.rec leftovers"
     echo
 
     exit 0
@@ -198,6 +199,9 @@ polish() {
 }
 
 clean() {
+	SCRIPT_DIR="$( cd "$(dirname "$0")" > /dev/null 2>&1 ; pwd -P )"
+	rm -f $SCRIPT_DIR/*.rec
+
     find $POTS_DIR -type f -not -name 'polished_dicts.csv' -delete
 
     if [[ $? -eq 0 ]] ; then
@@ -221,7 +225,7 @@ show() {
 
     if [[ -f "$PRG_FILE" ]] && [[ -s "$PRG_FILE" ]] ; then
         echo "Found passwords in session \"$SESSION\"":
-        echo "---------------"
+        echo
 
         # not so elegant but it works... need something better btw!
         grep -e '(.*)' "$PRG_FILE" | grep -v 'DONE (' | grep -v '^Loaded' | grep -v '^Node numbers' | sort -u
@@ -229,7 +233,7 @@ show() {
         echo
     elif [[ -f "$CSV_FILE" ]] && [[ -s "$CSV_FILE" ]] ; then
         echo "Found passwords in session \"$SESSION\"":
-        echo "---------------"
+        echo
 
         sort -u "$CSV_FILE"
 
@@ -383,7 +387,7 @@ crack() {
         echo "===> Finished at: $(date) <==="
         echo
         echo "Found passwords (saved in $PWD_FILE):"
-        echo "---------------"
+        echo
 
         john --show --pot="$POT_FILE" --format="$FORMAT" "$FILE" | grep -F ':' | sort -u | tee "$PWD_FILE"
 
