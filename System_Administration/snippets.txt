@@ -16,3 +16,13 @@ egrep -n "^.{$(wc -L < file.txt)}$" file.txt | sed 's/:/ -> /'
 
 # find all the strings with length equal or smaller than a given value in a text file
 awk 'length($1) <= 12 { print $1 }' file.txt
+
+
+
+# [WINDOWS] realign Domain Controllers after ZeroLogon exploitation
+- Stop/Disable Kerberos Distribution Center
+- Reboot the server
+- Run the following command:
+  netdom resetpwd /server:dc01.example.net /userd:example.net\administrator /passwordd:********
+- Reboot the server
+- Enable KDC and start the service
