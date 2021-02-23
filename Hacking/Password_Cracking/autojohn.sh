@@ -142,7 +142,7 @@ sessions() {
     exit 0
 }
 
-rules () {
+rules() {
     john --list=rules | sort -h
 
     echo
@@ -199,8 +199,8 @@ polish() {
 }
 
 clean() {
-	SCRIPT_DIR="$( cd "$(dirname "$0")" > /dev/null 2>&1 ; pwd -P )"
-	rm -f $SCRIPT_DIR/*.rec
+    SCRIPT_DIR="$( cd "$(dirname "$0")" > /dev/null 2>&1 ; pwd -P )"
+    rm -f $SCRIPT_DIR/*.rec
 
     find $POTS_DIR -type f -not -name 'polished_dicts.csv' -delete
 
@@ -259,9 +259,9 @@ crack() {
         fi
 
         readarray -t FORMATS < <(
-        {
-            john --list=unknown "$FILE" 2>&1 | awk -F\" '{ print $2 }' | sed -e 's/--format=//g' | sort -u | sed '/^$/d'
-            john --list=unknown "$FILE" 2>&1 | grep -F 'Loaded' | cut -d'(' -f2 | cut -d' ' -f1 | tr -d ','
+            {
+                john --list=unknown "$FILE" 2>&1 | awk -F\" '{ print $2 }' | sed -e 's/--format=//g' | sort -u | sed '/^$/d'
+                john --list=unknown "$FILE" 2>&1 | grep -F 'Loaded' | cut -d'(' -f2 | cut -d' ' -f1 | tr -d ','
         })
 
         if [[ ${#FORMATS[@]} -eq 0 ]] ; then
@@ -409,12 +409,12 @@ crack() {
 # CHECKS -----------------------------------------------------------------------
 
 declare -a CMDS=(
-"awk"
-"basename"
-"dos2unix"
-"john"
-"shasum"
-"tr"
+    "awk"
+    "basename"
+    "dos2unix"
+    "john"
+    "shasum"
+    "tr"
 );
 
 for CMD in ${CMDS[@]} ; do
@@ -457,52 +457,52 @@ fi
 PARAMS=""
 
 while (( "$#" )) ; do
-  case "$1" in
-    -h|--help)
-        usage
-        shift
-        ;;
-    --clean)
-        clean
-        shift
-        ;;
-    --info)
-        info
-        shift
-        ;;
-    --polish)
-        polish
-        shift
-        ;;
-    --rules)
-        rules
-        shift
-        ;;
-    --sessions)
-        sessions
-        shift
-        ;;
-    --show)
-        if [ -n "$2" ] && [ "${2:0:1}" != "-" ] ; then
-            show "$2"
-            shift 2
-        else
-            echo "Error! Argument for $1 is missing." >&2
+    case "$1" in
+        -h|--help)
+            usage
+            shift
+            ;;
+        --clean)
+            clean
+            shift
+            ;;
+        --info)
+            info
+            shift
+            ;;
+        --polish)
+            polish
+            shift
+            ;;
+        --rules)
+            rules
+            shift
+            ;;
+        --sessions)
+            sessions
+            shift
+            ;;
+        --show)
+            if [ -n "$2" ] && [ "${2:0:1}" != "-" ] ; then
+                show "$2"
+                shift 2
+            else
+                echo "Error! Argument for $1 is missing." >&2
+                echo
+
+                exit 1
+            fi
+            ;;
+        -*|--*=) # unsupported flags
+            echo "Error! Unsupported flag: $1" >&2
             echo
 
             exit 1
-        fi
-        ;;
-    -*|--*=) # unsupported flags
-        echo "Error! Unsupported flag: $1" >&2
-        echo
-
-        exit 1
-        ;;
-    *) # preserve positional arguments
-        PARAMS="$PARAMS $1"
-        shift
-        ;;
+            ;;
+        *) # preserve positional arguments
+            PARAMS="$PARAMS $1"
+            shift
+            ;;
     esac
 done
 
