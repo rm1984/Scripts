@@ -19,6 +19,11 @@ awk 'length($1) <= 12 { print $1 }' file.txt
 
 
 
+# find the 10 largest directories starting from /
+du -hsx -- /* | sort -rh | head -10
+
+
+
 # [WINDOWS] realign Domain Controllers after ZeroLogon exploitation
 - Stop/Disable Kerberos Distribution Center
 - Reboot the server
