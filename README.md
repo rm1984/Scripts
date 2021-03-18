@@ -22,6 +22,7 @@ A collection of personal useful scripts (in Bash and Python) for Unix and GNU/Li
 ./Hacking/Penetration_Testing/sniff_ssh_credentials.sh
 ./Hacking/snippets.txt
 ./Media/image_orientation.sh
+./Media/snippets.txt
 ./Networking/get_nics_with_ip_mac_status.sh
 ./Networking/list_public_open_ports.sh
 ./Networking/ping_until_alive.sh
