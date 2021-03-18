@@ -357,7 +357,7 @@ crack() {
         echo "===> Started at:  $(date) <==="
         echo
 
-        for DICT in $(ls -1Sr $DICT_DIR/*.txt) ; do
+        for DICT in $(ls -1 $DICT_DIR/*.txt) ; do
             BNDICT=$(basename "$DICT")
 
             echo "[>] $BNDICT"
