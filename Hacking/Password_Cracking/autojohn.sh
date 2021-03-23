@@ -104,35 +104,35 @@ usage() {
 }
 
 info() {
-    DICT_NUM=$(find $DICT_DIR/*txt | wc -l | awk '{ print $1 }')
-    DICT_SIZ=$(du -ch "$DU_A_PARAM" $DICT_DIR/*txt | tail -1 | awk '{ print $1 }')
+    DICT_NUM=$(find ${DICT_DIR}/*txt | wc -l | awk '{ print $1 }')
+    DICT_SIZ=$(du -ch "${DU_A_PARAM}" ${DICT_DIR}/*txt | tail -1 | awk '{ print $1 }')
 
-    echo "[+] Dictionaries directory:   $DICT_DIR"
-    echo "[+] Number of dictionaries:   $DICT_NUM"
-    echo "[+] Total dictionaries size:  $DICT_SIZ"
-    echo "[+] Pots directory:           $POTS_DIR"
+    echo "[+] Dictionaries directory:   ${DICT_DIR}"
+    echo "[+] Number of dictionaries:   ${DICT_NUM}"
+    echo "[+] Total dictionaries size:  ${DICT_SIZ}"
+    echo "[+] Pots directory:           ${POTS_DIR}"
     echo
 
     exit 0
 }
 
 sessions() {
-    N=$(find $POTS_DIR/*.pot 2> /dev/null | wc -l | awk '{ print $1 }')
+    N=$(find ${POTS_DIR}/*.pot 2> /dev/null | wc -l | awk '{ print $1 }')
 
-    if [[ "$N" -eq 0 ]] ; then
+    if [[ "${N}" -eq 0 ]] ; then
         echo "No sessions found (pots directory seems empty)."
     else
-        for SESSION in $(find $POTS_DIR/*.pot | sed -r 's/.*\/(.*).pot.*/\1/') ; do
-            if [[ -f "$POTS_DIR/$SESSION.progress" ]] ; then
-                ps auxwww | grep john | grep -- "--session=$SESSION" > /dev/null
+        for SESSION in $(find ${POTS_DIR}/*.pot | sed -r 's/.*\/(.*).pot.*/\1/') ; do
+            if [[ -f "${POTS_DIR}/${SESSION}.progress" ]] ; then
+                ps auxwww | grep john | grep -- "--session=${SESSION}" > /dev/null
 
                 if [[ $? -ne 0 ]] ; then
-                    echo "[R] $SESSION (dead?)"
+                    echo "[R] ${SESSION} (dead?)"
                 else
-                    echo "[R] $SESSION"
+                    echo "[R] ${SESSION}"
                 fi
             else
-                echo "[F] $SESSION"
+                echo "[F] ${SESSION}"
             fi
         done
     fi
@@ -155,54 +155,54 @@ polish() {
     export LC_ALL=C
 
     MEMORY_USAGE="50%" # maximum memory usage for "sort" command (think before changing it!)
-    CSV=$POTS_DIR/polished_dicts.csv
+    CSV=${POTS_DIR}/polished_dicts.csv
 
-    if [[ ! -w $CSV ]] ; then
-        echo "FILENAME;START_TIME;END_TIME;OLD_SIZE;NEW_SIZE" > $CSV
+    if [[ ! -w ${CSV} ]] ; then
+        echo "FILENAME;START_TIME;END_TIME;OLD_SIZE;NEW_SIZE" > ${CSV}
     fi
 
-    for DICT in $(ls -1Sr $DICT_DIR/*.txt) ; do
-        BNDICT=$(basename "$DICT")
+    for DICT in $(ls -1Sr ${DICT_DIR}/*.txt) ; do
+        BNDICT=$(basename "${DICT}")
 
-        echo "[>] $BNDICT"
+        echo "[>] ${BNDICT}"
 
         STIME=$(date)
-        OLDSIZE=$(du -h "$DU_A_PARAM" "$DICT" | awk '{ print $1 }')
+        OLDSIZE=$(du -h "${DU_A_PARAM}" "${DICT}" | awk '{ print $1 }')
 
-        echo "    Started at:    $STIME"
-        echo "    Current size:  $OLDSIZE"
+        echo "    Started at:    ${STIME}"
+        echo "    Current size:  ${OLDSIZE}"
 
         NEWDICT="${DICT}.NEW"
 
-        tr -dc '[:print:]\n\r' < "$DICT" > "$NEWDICT"
+        tr -dc '[:print:]\n\r' < "${DICT}" > "${NEWDICT}"
         sleep 1
-        dos2unix "$NEWDICT" > /dev/null 2>&1
+        dos2unix "${NEWDICT}" > /dev/null 2>&1
         sleep 1
-        sort -S "$MEMORY_USAGE" -u "$NEWDICT" > "$DICT" 2>&1
+        sort -S "${MEMORY_USAGE}" -u "${NEWDICT}" > "${DICT}" 2>&1
         sleep 1
-        rm "$NEWDICT"
+        rm "${NEWDICT}"
 
-        NEWSIZE=$(du -h "$DU_A_PARAM" "$DICT" | awk '{ print $1 }')
+        NEWSIZE=$(du -h "${DU_A_PARAM}" "${DICT}" | awk '{ print $1 }')
         ETIME=$(date)
 
-        echo "    New size:      $NEWSIZE"
-        echo "    Finished at:   $ETIME"
-        echo "$BNDICT;$STIME;$ETIME;$OLDSIZE;$NEWSIZE" >> $CSV
+        echo "    New size:      ${NEWSIZE}"
+        echo "    Finished at:   ${ETIME}"
+        echo "${BNDICT};${STIME};${ETIME};${OLDSIZE};${NEWSIZE}" >> ${CSV}
         echo
     done
 
     echo "Results can also be found in the following CSV file:"
-    echo "$CSV"
+    echo "${CSV}"
     echo
 
     exit 0
 }
 
 clean() {
-    SCRIPT_DIR="$( cd "$(dirname "$0")" > /dev/null 2>&1 ; pwd -P )"
-    rm -f $SCRIPT_DIR/*.rec
+    SCRIPT_DIR="$(cd "$(dirname "$0")" > /dev/null 2>&1 ; pwd -P)"
+    rm -f ${SCRIPT_DIR}/*.rec
 
-    find $POTS_DIR -type f -not -name 'polished_dicts.csv' -delete
+    find ${POTS_DIR} -type f -not -name 'polished_dicts.csv' -delete
 
     if [[ $? -eq 0 ]] ; then
         echo "Pots directory was cleaned up."
@@ -210,7 +210,7 @@ clean() {
 
         exit 0
     else
-        echo "Error! Cannot clean pots directory: $POTS_DIR"
+        echo "Error! Cannot clean pots directory: ${POTS_DIR}"
         echo
 
         exit 1
@@ -220,39 +220,39 @@ clean() {
 show() {
     SESSION=$1
 
-    PRG_FILE=$POTS_DIR/$SESSION.progress
-    CSV_FILE=$POTS_DIR/$SESSION.csv
+    PRG_FILE=${POTS_DIR}/${SESSION}.progress
+    CSV_FILE=${POTS_DIR}/${SESSION}.csv
 
-    if [[ -f "$PRG_FILE" ]] && [[ -s "$PRG_FILE" ]] ; then
-        echo "Found passwords in session \"$SESSION\"":
+    if [[ -f "${PRG_FILE}" ]] && [[ -s "$PRG_FILE" ]] ; then
+        echo "Found passwords in session \"${SESSION}\"":
         echo
 
         # not so elegant but it works... need something better btw!
-        grep -e '(.*)' "$PRG_FILE" | grep -v 'DONE (' | grep -v '^Loaded' | grep -v '^Node numbers' | sort -u
+        grep -e '(.*)' "${PRG_FILE}" | grep -v 'DONE (' | grep -v '^Loaded' | grep -v '^Node numbers' | sort -u
 
         echo
-    elif [[ -f "$CSV_FILE" ]] && [[ -s "$CSV_FILE" ]] ; then
-        echo "Found passwords in session \"$SESSION\"":
+    elif [[ -f "${CSV_FILE}" ]] && [[ -s "${CSV_FILE}" ]] ; then
+        echo "Found passwords in session \"${SESSION}\"":
         echo
 
-        sort -u "$CSV_FILE"
+        sort -u "${CSV_FILE}"
 
         echo
     else
-        echo "No passwords found (at the moment!) for session \"$SESSION\"."
+        echo "No passwords found (at the moment!) for session \"${SESSION}\"."
         echo
     fi
 }
 
 crack() {
-    PARAMS_COUNT=$(echo "$PARAMS" | wc -w)
-    PARAMS_ARRAY=("$PARAMS")
+    PARAMS_COUNT=$(echo "${PARAMS}" | wc -w)
+    PARAMS_ARRAY=(${PARAMS})
 
-    if [[ "$PARAMS_COUNT" -eq 1 ]] ; then
+    if [[ "${PARAMS_COUNT}" -eq 1 ]] ; then
         FILE="${PARAMS_ARRAY[0]}"
 
-        if [[ ! -f "$FILE" ]] ; then
-            echo "Error! Hashes file not found: $FILE"
+        if [[ ! -f "${FILE}" ]] ; then
+            echo "Error! Hashes file not found: ${FILE}"
             echo
 
             exit 1
@@ -260,8 +260,8 @@ crack() {
 
         readarray -t FORMATS < <(
             {
-                john --list=unknown "$FILE" 2>&1 | awk -F\" '{ print $2 }' | sed -e 's/--format=//g' | sort -u | sed '/^$/d'
-                john --list=unknown "$FILE" 2>&1 | grep -F 'Loaded' | cut -d'(' -f2 | cut -d' ' -f1 | tr -d ','
+                john --list=unknown "${FILE}" 2>&1 | awk -F\" '{ print $2 }' | sed -e 's/--format=//g' | sort -u | sed '/^$/d'
+                john --list=unknown "${FILE}" 2>&1 | grep -F 'Loaded' | cut -d'(' -f2 | cut -d' ' -f1 | tr -d ','
         })
 
         if [[ ${#FORMATS[@]} -eq 0 ]] ; then
@@ -279,100 +279,102 @@ crack() {
 
             echo
             echo "Now, to start cracking, run:"
-            echo "./autojohn.sh $FILE <FORMAT> <SESSION_NAME> [<RULE>]"
+            echo "./autojohn.sh ${FILE} <FORMAT> <SESSION_NAME> [<RULE>]"
             echo
         fi
 
         exit 0
-    elif [[ "$PARAMS_COUNT" -eq 3 || "$PARAMS_COUNT" -eq 4 ]] ; then
+    elif [[ "${PARAMS_COUNT}" -eq 3 || "${PARAMS_COUNT}" -eq 4 ]] ; then
         FILE="${PARAMS_ARRAY[0]}"
         FORMAT="${PARAMS_ARRAY[1]}"
         SESSION="${PARAMS_ARRAY[2]}"
         RULE=""
 
-        if [[ "$PARAMS_COUNT" -eq 4 ]] ; then
+        if [[ "${PARAMS_COUNT}" -eq 4 ]] ; then
             RULE="${PARAMS_ARRAY[3]}"
 
-            if [[ $(john --list=rules | grep -c -i -w "$RULE") -eq 0 ]] ; then
-                echo "Error! Rule does not exist: $RULE"
+            if [[ $(john --list=rules | grep -c -i -w "${RULE}") -eq 0 ]] ; then
+                echo "Error! Rule does not exist: ${RULE}"
                 echo
 
                 exit 1
             fi
         fi
 
-        if [[ ! -f "$FILE" ]] ; then
-            echo "Error! Hashes file not found: $FILE"
+        if [[ ! -f "${FILE}" ]] ; then
+            echo "Error! Hashes file not found: ${FILE}"
             echo
 
             exit 1
         fi
 
-        if [[ $FORMAT == --* ]] ; then
-            echo "Wrong value for <FORMAT>: $FORMAT"
+        if [[ ${FORMAT} == --* ]] ; then
+            echo "Wrong value for <FORMAT>: ${FORMAT}"
             echo
 
             exit 1
         fi
 
-        if [[ $SESSION == --* ]] ; then
-            echo "Wrong value for <SESSION_NAME>: $SESSION"
+        if [[ ${SESSION} == --* ]] ; then
+            echo "Wrong value for <SESSION_NAME>: ${SESSION}"
             echo
 
             exit 1
         fi
 
-        POT_FILE=$POTS_DIR/$SESSION.pot
-        PWD_FILE=$POTS_DIR/$SESSION.csv
-        PROGRESS_FILE=$POTS_DIR/$SESSION.progress
-        STATUS=$(john --show --pot="$POT_FILE" --format="$FORMAT" "$FILE" | grep -F cracked)
-        C=$(echo "$STATUS" | grep -c -F ', 0 left')
+        POT_FILE=${POTS_DIR}/${SESSION}.pot
+        PWD_FILE=${POTS_DIR}/${SESSION}.csv
+        PROGRESS_FILE=${POTS_DIR}/${SESSION}.progress
+        STATUS=$(john --show --pot="${POT_FILE}" --format="${FORMAT}" "${FILE}" | grep -F cracked)
+        C=$(echo "${STATUS}" | grep -c -F ', 0 left')
 
-        if [[ $C -eq 1 ]] ; then
+        if [[ ${C} -eq 1 ]] ; then
             echo "All passwords already found! Exiting..."
             echo
 
             exit 0
         fi
 
-        N=$(wc -l "$FILE" | awk '{ print $1 }')
-        SHA=$(shasum "$FILE" | awk '{ print $1 }')
-        BFILE=$(basename "$FILE")
+        N=$(wc -l "${FILE}" | awk '{ print $1 }')
+        SHA=$(shasum "${FILE}" | awk '{ print $1 }')
+        BFILE=$(basename "${FILE}")
 
-        cp "$FILE" $POTS_DIR/"${SESSION}_${BFILE}_${SHA}"
+        cp "${FILE}" ${POTS_DIR}/"${SESSION}_${BFILE}_${SHA}"
 
-        echo "[+] Hashes file:   $(readlink -f $FILE)"
-        echo "[+] Session name:  $SESSION"
-        echo "[+] Total hashes:  $N"
-        echo "[+] Hash format:   $FORMAT"
+        echo "[+] Hashes file:   $(readlink -f ${FILE})"
+        echo "[+] Session name:  ${SESSION}"
+        echo "[+] Total hashes:  ${N}"
+        echo "[+] Hash format:   ${FORMAT}"
 
-        if [[ -z "$RULE" ]] ; then
+        if [[ -z "${RULE}" ]] ; then
             echo "[+] Rule:          *DEFAULT*"
         else
-            echo "[+] Rule:          $RULE"
+            echo "[+] Rule:          ${RULE}"
         fi
 
-        echo "[+] # of cores:    $CORES"
+        echo "[+] # of cores:    ${CORES}"
+
         echo
         echo "===> Started at:  $(date) <==="
         echo
 
-        for DICT in $(ls -1 $DICT_DIR/*.txt) ; do
-            BNDICT=$(basename "$DICT")
+        for DICT in $(ls -1 ${DICT_DIR}/*.txt) ; do
+            BNDICT=$(basename "${DICT}")
 
-            echo "[>] $BNDICT"
+            echo "[>] ${BNDICT}"
 
-            if [[ -z "$RULE" ]] ; then
-                john --wordlist="$DICT" --format="$FORMAT" --nolog --fork="$CORES" --session="$SESSION" --pot="$POT_FILE" "$FILE" >> "$PROGRESS_FILE" 2>&1
+            if [[ -z "${RULE}" ]] ; then
+                john --wordlist="${DICT}" --format="${FORMAT}" --nolog --fork="${CORES}" --session="${SESSION}" --pot="${POT_FILE}" "${FILE}" >> "${PROGRESS_FILE}" 2>&1
             else
-                john --wordlist="$DICT" --format="$FORMAT" --nolog --fork="$CORES" --session="$SESSION" --pot="$POT_FILE" --rules="$RULE" "$FILE" >> "$PROGRESS_FILE" 2>&1
+                john --wordlist="${DICT}" --format="${FORMAT}" --nolog --fork="${CORES}" --session="${SESSION}" --pot="${POT_FILE}" --rules="${RULE}" "${FILE}" >> "${PROGRESS_FILE}" 2>&1
             fi
 
-            STATUS=$(john --show --pot="$POT_FILE" --format="$FORMAT" "$FILE" | grep -F cracked)
-            echo "$STATUS"
-            C=$(echo "$STATUS" | grep -c -F ', 0 left')
+            STATUS=$(john --show --pot="${POT_FILE}" --format="${FORMAT}" "${FILE}" | grep -F cracked)
+            echo "${STATUS}"
 
-            if [[ $C -eq 1 ]] ; then
+            C=$(echo "${STATUS}" | grep -c -F ', 0 left')
+
+            if [[ ${C} -eq 1 ]] ; then
                 echo
                 echo "************************"
                 echo "*   Congratulations!   *"
@@ -386,17 +388,23 @@ crack() {
         echo
         echo "===> Finished at: $(date) <==="
         echo
-        echo "Found passwords (saved in $PWD_FILE):"
+
+        echo "--------------------------------------------------------------------------------"
+        echo "Found passwords (saved in ${PWD_FILE}):"
         echo
 
-        john --show --pot="$POT_FILE" --format="$FORMAT" "$FILE" | grep -F ':' | sort -u | tee "$PWD_FILE"
+        john --show --pot="${POT_FILE}" --format="${FORMAT}" "${FILE}" | grep -F ':' | sort -u | tee "${PWD_FILE}"
 
-        if [[ $? -ne 0 ]] ; then
+        NU=$(cat "${PWD_FILE}" | wc -l | awk '{ print $1 }')
+
+        if [[ ${NU} -eq 0 ]] ; then
             echo "None :-("
+
+            rm -f "${PWD_FILE}"
         fi
 
-        if [[ -f "$PROGRESS_FILE" ]] ; then
-            rm -f "$PROGRESS_FILE"
+        if [[ -f "${PROGRESS_FILE}" ]] ; then
+            rm -f "${PROGRESS_FILE}"
         fi
 
         echo
@@ -418,28 +426,28 @@ declare -a CMDS=(
 );
 
 for CMD in ${CMDS[@]} ; do
-    command_exists "$CMD"
+    command_exists "${CMD}"
 done
 
-if [[ ! -d "$DICT_DIR" ]] ; then
-    echo "Error! Dictionaries directory not found: $DICT_DIR"
+if [[ ! -d "${DICT_DIR}" ]] ; then
+    echo "Error! Dictionaries directory not found: ${DICT_DIR}"
 
     exit 1
 else
-    DICT_NUM=$(find $DICT_DIR/*.txt 2> /dev/null | wc -l)
+    DICT_NUM=$(find ${DICT_DIR}/*.txt 2> /dev/null | wc -l)
 
-    if [[ "$DICT_NUM" -eq 0 ]] ; then
+    if [[ "${DICT_NUM}" -eq 0 ]] ; then
         echo "Error! No *.txt dictionaries found."
 
         exit 1
     fi
 fi
 
-if [[ ! -d "$POTS_DIR" ]] ; then
-    mkdir -p "$POTS_DIR" 2> /dev/null
+if [[ ! -d "${POTS_DIR}" ]] ; then
+    mkdir -p "${POTS_DIR}" 2> /dev/null
 
     if [[ "$?" -ne 0 ]] ; then
-        echo "Error! Cannot create pots directory: $POTS_DIR"
+        echo "Error! Cannot create pots directory: ${POTS_DIR}"
 
         exit 1
     fi
@@ -500,12 +508,12 @@ while (( "$#" )) ; do
             exit 1
             ;;
         *) # preserve positional arguments
-            PARAMS="$PARAMS $1"
+            PARAMS="${PARAMS} $1"
             shift
             ;;
     esac
 done
 
-eval set -- "$PARAMS"
+eval set -- "${PARAMS}"
 
-crack "$PARAMS"
+crack "${PARAMS}"
