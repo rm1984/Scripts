@@ -205,7 +205,7 @@ clean() {
     find ${POTS_DIR} -type f -not -name 'polished_dicts.csv' -delete
 
     if [[ $? -eq 0 ]] ; then
-        echo "Pots directory was cleaned up."
+        echo "Pots directory has been cleaned up."
         echo
 
         exit 0
@@ -223,7 +223,7 @@ show() {
     PRG_FILE=${POTS_DIR}/${SESSION}.progress
     CSV_FILE=${POTS_DIR}/${SESSION}.csv
 
-    if [[ -f "${PRG_FILE}" ]] && [[ -s "$PRG_FILE" ]] ; then
+    if [[ -f "${PRG_FILE}" ]] && [[ -s "${PRG_FILE}" ]] ; then # cracking is in progress
         echo "Found passwords in session \"${SESSION}\"":
         echo
 
@@ -231,7 +231,7 @@ show() {
         grep -e '(.*)' "${PRG_FILE}" | grep -v 'DONE (' | grep -v '^Loaded' | grep -v '^Node numbers' | sort -u
 
         echo
-    elif [[ -f "${CSV_FILE}" ]] && [[ -s "${CSV_FILE}" ]] ; then
+    elif [[ -f "${CSV_FILE}" ]] && [[ -s "${CSV_FILE}" ]] ; then # cracking has finished
         echo "Found passwords in session \"${SESSION}\"":
         echo
 
