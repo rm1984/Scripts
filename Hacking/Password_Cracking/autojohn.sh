@@ -199,7 +199,7 @@ polish() {
 }
 
 clean() {
-    SCRIPT_DIR="$(cd "$(dirname "$0")" > /dev/null 2>&1 ; pwd -P)"
+    SCRIPT_DIR="$(cd $(dirname "$0") > /dev/null 2>&1 ; pwd -P)"
     rm -f ${SCRIPT_DIR}/*.rec
 
     find ${POTS_DIR} -type f -not -name 'polished_dicts.csv' -delete
@@ -339,7 +339,7 @@ crack() {
         SHA=$(shasum "${FILE}" | awk '{ print $1 }')
         BFILE=$(basename "${FILE}")
 
-        cp "${FILE}" ${POTS_DIR}/"${SESSION}_${BFILE}_${SHA}"
+        cp "${FILE}" "${POTS_DIR}/${SESSION}_${BFILE}_${SHA}"
 
         echo "[+] Hashes file:   $(readlink -f ${FILE})"
         echo "[+] Session name:  ${SESSION}"
