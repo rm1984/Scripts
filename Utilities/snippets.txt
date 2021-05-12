@@ -2,8 +2,10 @@
 tr -dc '[:print:]\n\r' < in.file > out.file
 
 
+
 # URL-encode any string very quickly
 echo 'https://duckduckgo.com/?q=url+encode&t=h_&ia=web' | jq -sRr @uri
+
 
 
 # URL-decode any string very quickly
@@ -11,20 +13,25 @@ alias urldecode='sed "s@+@ @g;s@%@\\\\x@g" | xargs -0 printf "%b"'
 echo 'https%3A%2F%2Fduckduckgo.com%2F%3Fq%3Durl%2Bencode%26t%3Dh_%26ia%3Dweb%0A' | urldecode
 
 
+
 # extract files from binary file with BinWalk
 binwalk -I -k -z -M -e -v file.bin
+
 
 
 # convert a TXT file to a PDF file
 vim example.txt -c "hardcopy > example.ps | q" ; ps2pdf example.ps
 
 
+
 # read complete lines with spaces in a loop from a text file
 while read STR ; do echo "$STR" ; done < example.txt
 
 
+
 # search strings with an exact numbers of characters only (eg: hashes)
 cat example.txt | grep -E '^.{32}$'
+
 
 
 # print a text line until a specific word is found (that word is excluded from the output)

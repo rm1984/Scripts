@@ -31,3 +31,10 @@ du -hsx -- /* | sort -rh | head -10
   netdom resetpwd /server:dc01.example.net /userd:example.net\administrator /passwordd:********
 - Reboot the server
 - Enable KDC and start the service
+
+
+
+# test RDP login only with XFreeRDP without graphical environment
+Xvfb :1 &
+export DISPLAY=:1
+xfreerdp --ignore-certificate --authonly -u $USERNAME -p $PASSWORD $HOST
