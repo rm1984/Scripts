@@ -47,6 +47,7 @@ A collection of personal useful scripts (in Bash and Python) for Unix and GNU/Li
 ./Utilities/free_buffer_cache.sh
 ./Utilities/git_list_repos.sh
 ./Utilities/git_update_repos.sh
+./Utilities/greenpass_qr_decoder.sh
 ./Utilities/magnet2torrent.sh
 ./Utilities/mysql2csv.sh
 ./Utilities/nessus_massive_export.sh
