@@ -4,6 +4,8 @@
 #
 # TOOD:
 # - convert binary encoded strings
+#
+# https://git.gir.st/greenpass.git/blob_plain/master:/greenpass.py
 
 QRCODE=$1
 

@@ -34,7 +34,10 @@ du -hsx -- /* | sort -rh | head -10
 
 
 
-# test RDP login only with XFreeRDP without graphical environment
+# test RDP login with XFreeRDP without using a graphical environment (dummy X is necessary)
 Xvfb :1 &
 export DISPLAY=:1
-xfreerdp --ignore-certificate --authonly -u $USERNAME -p $PASSWORD $HOST
+xfreerdp /log-level:OFF --ignore-certificate --authonly -u $USERNAME -p $PASSWORD $HOST
+if [[ $? -eq 0 ]] ; then
+    echo -n "$HOST: OK"
+fi
