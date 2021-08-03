@@ -85,6 +85,12 @@ amass -v -whois -ip -active -brute -d example.com
 
 
 
+# directly connect to SQL databases with SQLMap
+sqlmap -d 'mysql://$USERNAME:$PASSWORD@$HOST:3306/$DATABASE' -v 3 --dbs --tables
+sqlmap -d 'mssql://$USERNAME:$PASSWORD@$HOST:1433/$DATABASE' -v 3 --dbs --tables
+
+
+
 # convert WPA-PSK captured handshake to hash (suitable for John The Ripper)
 /usr/lib/hashcat-utils/cap2hccapx.bin file.cap file.hccapx
 hccap2john file.hccapx >> hashes.txt
