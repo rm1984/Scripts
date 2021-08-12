@@ -27,16 +27,15 @@
 
 # VARIABLES --------------------------------------------------------------------
 
-HOSTADDR="192.168.1.34" # the IP address of your Nessus scanner
-HOSTPORT="8834" # the TCP port of your Nessus scanner (default: 8834)
+HOSTADDR="192.168.1.34"        # the IP address of your Nessus scanner
+HOSTPORT="8834"                # the TCP port of your Nessus scanner (default: 8834)
 USERNAME="nessus_user"
 PASSWORD='nessus_password'
 
-TMPDIR="/tmp/.nme" # directory that will contain temporary files
+TMPDIR="/tmp/.nme"             # directory that will contain temporary files
 REPORTSDIR="${TMPDIR}/reports" # directory that will contain XML ".nessus" files exported from Nessus
-SLEEPSEC=10 # seconds to wait to let Nessus generate the export file
-UA="cURL/7.65.3" # custom user agent
-#UA="User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0"
+SLEEPSEC=10                    # seconds to wait to let Nessus generate the export file
+UA="cURL/7.65.3"               # custom user agent
 
 
 # FUNCTIONS --------------------------------------------------------------------

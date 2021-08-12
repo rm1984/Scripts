@@ -10,6 +10,7 @@ A collection of personal useful scripts (in Bash and Python) for Unix and GNU/Li
 ./Hacking/Info_Gathering/nmap_light.sh
 ./Hacking/Info_Gathering/nmap_with_tor.sh
 ./Hacking/Info_Gathering/zmap_screenshot.sh
+./Hacking/Misc/dirtycow_centos.sh
 ./Hacking/Password_Cracking/autojohn.sh
 ./Hacking/Password_Cracking/dict_split_n_sort.sh
 ./Hacking/Password_Cracking/htmltable2csv.py
