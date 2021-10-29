@@ -121,3 +121,11 @@ ssh -D 0.0.0.0:8080 compromiseduser@127.0.0.1 -p 2222 -fNT
 # videos on YouTube with a very simple explanation on how to use the ZeroLogon exploit ()
 https://www.youtube.com/watch?v=3xEk6ZaBMJ8
 https://www.youtube.com/watch?v=kGIDY-sF1Hk
+
+
+
+# update OpenVAS feeds
+runuser -u _gvm -- greenbone-nvt-sync
+runuser -u _gvm -- greenbone-scapdata-sync
+runuser -u _gvm -- greenbone-certdata-sync
+runuser -u _gvm -- greenbone-feed-sync --type GVMD_DATA
