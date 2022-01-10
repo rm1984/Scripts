@@ -38,3 +38,8 @@ cat example.txt | grep -E '^.{32}$'
 STR='Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
 echo ${STR%%"and"*}
 Lorem Ipsum is simply dummy text of the printing
+
+
+
+# run Google Chrome with a specific SOCKS5 proxy server
+google-chrome-stable --proxy-server="socks5://127.0.0.1:3128" --host-resolver-rules="MAP * ~NOTFOUND , EXCLUDE 127.0.0.1"
