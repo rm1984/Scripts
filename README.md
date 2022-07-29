@@ -52,6 +52,7 @@ A collection of personal useful scripts (in Bash and Python) for Unix and GNU/Li
 ./Utilities/magnet2torrent.sh
 ./Utilities/mysql2csv.sh
 ./Utilities/nessus_massive_export.sh
+./Utilities/NessusToExcel.py
 ./Utilities/send_sms.sh
 ./Utilities/share_dir_via_rdp.sh
 ./Utilities/snippets.txt
