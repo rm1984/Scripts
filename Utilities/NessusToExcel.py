@@ -2,6 +2,11 @@
 
 # original script:
 # https://raw.githubusercontent.com/spyr0-sec/helper-scripts/main/nessusToExcel.py
+#
+# if you get this error:
+# https://github.com/spyr0-sec/helper-scripts/issues/1
+# please run:
+# pip uninstall nessus-file-reader ; pip install nessus_file_reader==0.3.0
 
 import os, re, io, argparse, shutil, string, time, textwrap, xlsxwriter
 from xml.etree.ElementTree import ParseError
