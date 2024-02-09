@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/usr/bin/env bash
 
 # this script is useful to compile the FireFart DirtyCow exploit on a CentOS 7.X machine which doesn't have a C compiler
 
@@ -34,6 +34,7 @@ done
 export PATH=${DIR}/sbin:${DIR}/usr/bin:${DIR}/usr/sbin:$PATH
 export LD_LIBRARY_PATH=${DIR}/usr/lib64:${DIR}/lib64:$LD_LIBRARY_PATH
 export LIBRARY_PATH=${DIR}/usr/lib64:${DIR}/lib64:$LD_LIBRARY_PATH
+export CPATH=${DIR}/usr/include
 
 ldconfig -v -f ${DIR}/etc/ld.so.conf -C ${DIR}/etc/ld.so.cache
 
