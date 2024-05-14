@@ -7,6 +7,7 @@ A collection of personal useful scripts (in Bash and Python) for Unix and GNU/Li
 ./Graphical_Environments/set_gnome-shell_theme.sh
 ./Hacking/Info_Gathering/nmap_amap_identify.sh
 ./Hacking/Info_Gathering/nmap_deep.sh
+./Hacking/Info_Gathering/nmap_html_report.sh
 ./Hacking/Info_Gathering/nmap_light.sh
 ./Hacking/Info_Gathering/nmap_with_tor.sh
 ./Hacking/Info_Gathering/zmap_screenshot.sh
