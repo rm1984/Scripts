@@ -58,6 +58,7 @@ A collection of personal useful scripts (in Bash and Python) for Unix and GNU/Li
 ./Utilities/NessusToExcel.py
 ./Utilities/send_sms.sh
 ./Utilities/share_dir_via_rdp.sh
+./Utilities/shrinkpdf.sh
 ./Utilities/snippets.txt
 ./Utilities/xfce4-root-terminal.sh
 ./Web/extract_links.sh
