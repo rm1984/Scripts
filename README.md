@@ -20,6 +20,7 @@ A collection of personal useful scripts (in Bash and Python) for Unix and GNU/Li
 ./Hacking/Password_Cracking/pwd_sucker_gromweb.sh
 ./Hacking/Password_Cracking/pwd_sucker_hashkiller.sh
 ./Hacking/Password_Cracking/pwd_sucker_md5db.sh
+./Hacking/Penetration_Testing/find_reflected_xss.sh
 ./Hacking/Penetration_Testing/sniff_host_traffic.sh
 ./Hacking/Penetration_Testing/sniff_passwords_tcpdump.sh
 ./Hacking/Penetration_Testing/sniff_ssh_credentials.sh
